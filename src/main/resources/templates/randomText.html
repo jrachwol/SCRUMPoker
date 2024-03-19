@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Losowy tekst</title>
+</head>
+<body>
+    <h1>Generator losowych ciągów znaków</h1>
+    <h2 th:text="'Wygenerowany ciąg znaków: ' + ${randomText.getGeneratedText()}"></h2>
+
+</body>
+</html>

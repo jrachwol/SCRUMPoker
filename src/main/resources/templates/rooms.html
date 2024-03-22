@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SCRUM Room</title>
+</head>
+<body>
+    <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>
+    <h2 th:text="'SCRUM Rooms ' + ${rooms.size()} + ' pcs'"></h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa</th>
+            <th>Code</th>
+            <!-- Dodaj więcej kolumn zgodnie z atrybutami klasy Room -->
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iteracja przez listę pokoi -->
+        <tr th:each="room : ${rooms}">
+                <td th:text="${room.getId()}"></td>
+            <td><a th:href="@{/room/{code}(code=${room.getCode()})}" th:text="${room.getName()}"></a></td>
+                <td th:text="${room.getCode()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</body>
+</html>

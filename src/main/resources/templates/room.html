@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SCRUM Room</title>
+</head>
+<body>
+<!--    <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>-->
+    <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>
+    <h2 th:text="'SCRUM Room Name: ' + ${room.getName()}"></h2>
+    <h2 th:text="'SCRUM Room Code: ' + ${room.getCode()}"></h2>
+
+    <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>
+
+</body>
+</html>

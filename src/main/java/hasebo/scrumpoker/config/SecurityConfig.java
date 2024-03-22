@@ -33,9 +33,16 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
+
+                .formLogin(Customizer.withDefaults())
+
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .permitAll())
+
                 .userDetailsService(jpaUserDetailsService)
                 .headers(headers-> headers.frameOptions(customizer -> customizer.sameOrigin()))
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .build();
 
     }

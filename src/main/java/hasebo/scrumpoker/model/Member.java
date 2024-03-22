@@ -15,6 +15,7 @@ public class Member {
     private String name;
     private String password;
     private String roles;
+//    private String lastView;
 
     public Member() {
 

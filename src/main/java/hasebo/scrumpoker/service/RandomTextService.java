@@ -8,7 +8,7 @@ import java.util.UUID;
 @Service
 public class RandomTextService {
    public TextGenerated generateRandomText () {
-        return new TextGenerated(UUID.randomUUID().toString());
+        return new TextGenerated(UUID.randomUUID().toString().replace("-", ""));
     }
 
 }

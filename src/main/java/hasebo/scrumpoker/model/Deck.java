@@ -13,4 +13,5 @@ public class Deck {
     @GeneratedValue
     private Long id;
     private String figure;
+
 }

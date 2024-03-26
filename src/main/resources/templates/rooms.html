@@ -23,6 +23,7 @@
                 <td th:text="${room.getId()}"></td>
             <td><a th:href="@{/room/{code}(code=${room.getCode()})}" th:text="${room.getName()}"></a></td>
                 <td th:text="${room.getCode()}"></td>
+                <td <span th:each=" card : ${room.getCards()} " th:text="${card.figure + ' '}"></span>></td>
         </tr>
         </tbody>
     </table>

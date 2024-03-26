@@ -5,10 +5,12 @@
     <title>SCRUM Room</title>
 </head>
 <body>
-<!--    <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>-->
+
+<!--    Przekazać komplet kart, jeśli karta dostępna w pokoju, chckbx zaznaczony -->
     <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>
     <h2 th:text="'SCRUM Room Name: ' + ${room.getName()}"></h2>
     <h2 th:text="'SCRUM Room Code: ' + ${room.getCode()}"></h2>
+    <h2 <span th:each=" card : ${room.getCards()} " th:text="${card.figure + ' '}"></span>></h2>
 
     <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>
 

@@ -1,21 +1,24 @@
 package hasebo.scrumpoker.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="members")
+@Table(name="member")
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String password;
     private String roles;
 //    private String lastView;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Room> rooms = new HashSet<>();
 
     public Member() {
 

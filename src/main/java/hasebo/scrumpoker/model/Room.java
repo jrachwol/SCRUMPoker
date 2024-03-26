@@ -1,31 +1,39 @@
 package hasebo.scrumpoker.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="rooms")
+@Table(name="room")
 public class Room {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
     private String name;
-    private Long ownerId;
-//    members
-//    cardsSet
+
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member owner;
+
+    @ManyToMany
+    @JoinTable(
+            name = "card_room",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "card_id"))
+    private Set<Card> cards = new HashSet<>();
 
 
     public Room() {
     }
 
-    public Room(String code, String name, Long ownerId) {
+    public Room(String code, String name, Member owner) {
         this.code = code;
         this.name = name;
-        this.ownerId = ownerId;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -52,12 +60,20 @@ public class Room {
         this.name = name;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Member getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(Member owner) {
+        this.owner = owner;
+    }
+
+    public Set<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
     }
 
     @Override

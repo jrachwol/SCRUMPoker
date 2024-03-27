@@ -2,7 +2,9 @@ package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,7 +20,8 @@ public class Member {
 //    private String lastView;
 
     @OneToMany(mappedBy = "owner")
-    private Set<Room> rooms = new HashSet<>();
+//    private Set<Room> rooms = new HashSet<>();
+    private List<Room> rooms = new ArrayList<>();
 
     public Member() {
 

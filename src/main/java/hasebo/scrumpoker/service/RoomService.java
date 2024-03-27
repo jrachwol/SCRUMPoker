@@ -40,7 +40,7 @@ public class RoomService {
 //        return getRoomsByOwnerId(memberRepository.findByName(ownerName).get().getId());
 
 //        błąd z Optional<>
-//        return roomRepository.findByOwnerId(memberRepository.findByName(ownerName).get().getId());
+//        return roomRepository.findByOwnerId(memberRepository.findByName(ownerName).get().getId()) // .get();
 
 //        Czy dla Optional<> zawsze sprawdzać czy nie zwraca null?
         Optional<Member> member = memberRepository.findByName(ownerName);

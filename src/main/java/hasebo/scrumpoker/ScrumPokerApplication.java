@@ -47,7 +47,7 @@ public class ScrumPokerApplication {
             room01.setName("room01");
             room01.setOwner(members.findByName("member01").get());
             room01.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room01.setCards(new HashSet<>((Collection) cards.findAll()));
+            room01.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room01);
 
 
@@ -56,7 +56,7 @@ public class ScrumPokerApplication {
             room02.setName("room02");
             room02.setOwner(members.findByName("member01").get());
             room02.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room02.setCards(new HashSet<>((Collection) cards.findAll()));
+            room02.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room02);
 
 
@@ -65,7 +65,7 @@ public class ScrumPokerApplication {
             room03.setName("room03");
             room03.setOwner(members.findByName("member02").get());
             room03.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room03.setCards(new HashSet<>((Collection) cards.findAll()));
+            room03.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room03);
 
 
@@ -74,16 +74,17 @@ public class ScrumPokerApplication {
             room04.setName("room04");
             room04.setOwner(members.findByName("member02").get());
             room04.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room04.setCards(new HashSet<>((Collection) cards.findAll()));
+            room04.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room04);
 
 
             // Utwórz pokój i przypisz do niego wszystkie karty
+
             Room room05 = new Room();
             room05.setName("room05");
             room05.setOwner(members.findByName("member02").get());
             room05.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room05.setCards(new HashSet<>((Collection) cards.findAll()));
+            room05.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room05);
 
         };

@@ -2,7 +2,9 @@ package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,7 +26,7 @@ public class Room {
             name = "card_room",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id"))
-    private Set<Card> cards = new HashSet<>();
+    private List<Card> cards = new ArrayList<>();
 
 
     public Room() {
@@ -68,11 +70,11 @@ public class Room {
         this.owner = owner;
     }
 
-    public Set<Card> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 
-    public void setCards(Set<Card> cards) {
+    public void setCards(List<Card> cards) {
         this.cards = cards;
     }
 

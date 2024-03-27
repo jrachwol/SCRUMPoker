@@ -2,7 +2,9 @@ package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,7 +17,8 @@ public class Card {
     private String figure;
 
     @ManyToMany(mappedBy = "cards")
-    private Set<Room> rooms = new HashSet<>();
+//    private Set<Room> rooms = new HashSet<>();
+    private List<Room> rooms = new ArrayList<>();
 
     public Card() {
     }
@@ -41,11 +44,11 @@ public class Card {
         this.figure = figure;
     }
 
-    public Set<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(Set<Room> rooms) {
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 }

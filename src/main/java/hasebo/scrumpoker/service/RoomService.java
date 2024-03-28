@@ -53,6 +53,7 @@ public class RoomService {
         return new ArrayList<>();  // zwróć pustą listę, jeśli nie znaleziono pokoi lub właściciela
     }
 
-
-
+    public void saveRoom(Room room) {
+        roomRepository.save(room);
+    }
 }

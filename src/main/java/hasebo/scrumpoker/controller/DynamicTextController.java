@@ -23,7 +23,7 @@ public class DynamicTextController {
         TextGenerated textGenerated = randomTextService.generateRandomText();
         model.addAttribute("randomText", textGenerated);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("member", auth.getName().toString());
+        model.addAttribute("member", auth.getName());
         return "randomText";
     }
 

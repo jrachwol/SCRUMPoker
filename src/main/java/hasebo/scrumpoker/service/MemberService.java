@@ -12,9 +12,9 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-//    public Member getMemberById (Long memberId) {
-//        return memberRepository.findById(memberId);
-//    }
+    public Member getMemberById (Long memberId) {
+        return memberRepository.findById(memberId).get();
+    }
 
     Member findByName (String ownerName) {
         return memberRepository.findByName(ownerName).get();

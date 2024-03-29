@@ -1,13 +1,8 @@
 package hasebo.scrumpoker.service;
 
-import hasebo.scrumpoker.model.Card;
 import hasebo.scrumpoker.repository.CardRepository;
 import hasebo.scrumpoker.repository.RoomRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CardService {

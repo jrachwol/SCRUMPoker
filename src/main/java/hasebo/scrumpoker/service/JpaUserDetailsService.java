@@ -1,6 +1,7 @@
 package hasebo.scrumpoker.service;
 
 import hasebo.scrumpoker.model.SecurityUser;
+//import hasebo.scrumpoker.repository.MemberRepository;
 import hasebo.scrumpoker.repository.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

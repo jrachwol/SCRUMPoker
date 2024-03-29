@@ -16,10 +16,4 @@ public class TextGenerated {
         return randomText;
     }
 
-//    @Override
-//    public String toString() {
-//        return randomText;
-//    }
-
-
 }

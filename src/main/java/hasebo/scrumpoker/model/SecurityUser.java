@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class SecurityUser implements UserDetails {
 
-    private Member member;
+    private final Member member;
 
     public SecurityUser(Member member) {
         this.member = member;

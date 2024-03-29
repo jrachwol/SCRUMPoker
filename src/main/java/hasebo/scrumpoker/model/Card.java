@@ -3,9 +3,7 @@ package hasebo.scrumpoker.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "card")
@@ -26,10 +24,6 @@ public class Card {
     public Card(Long id, String figure) {
         this.id = id;
         this.figure = figure;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getId() {

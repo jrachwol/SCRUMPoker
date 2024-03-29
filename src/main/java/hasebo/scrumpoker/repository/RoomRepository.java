@@ -1,6 +1,5 @@
 package hasebo.scrumpoker.repository;
 
-import hasebo.scrumpoker.model.Card;
 import hasebo.scrumpoker.model.Room;
 import org.springframework.data.repository.CrudRepository;
 

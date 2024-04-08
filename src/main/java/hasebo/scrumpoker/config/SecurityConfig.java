@@ -27,20 +27,26 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-                .authorizeRequests(auth -> auth
+//                .authorizeRequests(auth -> auth
+//                        .requestMatchers("/h2-console/**").permitAll()
+//                        .anyRequest().authenticated())
+
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
 
                 .formLogin(Customizer.withDefaults())
+
 
 //                .formLogin(form -> form
 //                        .loginPage("/login")
 //                        .permitAll())
 
                 .userDetailsService(jpaUserDetailsService)
-                .headers(headers-> headers.frameOptions(customizer -> customizer.sameOrigin()))
+                .headers(headers -> headers.frameOptions(customizer -> customizer.sameOrigin()))
 //                .httpBasic(Customizer.withDefaults())
                 .build();
+
 
     }
 

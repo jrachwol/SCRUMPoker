@@ -2,7 +2,6 @@ package hasebo.scrumpoker.service;
 
 import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.repository.MemberRepository;
-import hasebo.scrumpoker.repository.RoomRepository;
 
 public class MemberService {
 

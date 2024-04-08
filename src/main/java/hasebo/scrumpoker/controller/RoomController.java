@@ -9,10 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Controller
 public class RoomController {
@@ -46,15 +44,22 @@ public class RoomController {
         return "redirect:/rooms";
     }
 
+//    usuwanie pokoju /deleteRoom/{code}
+    @GetMapping("/deleteRoom/{code}")
+    public String deleteRoom(@PathVariable("code") String code) {
+        Room room = roomService.getRoomInfoByCode(code);
+        roomService.deleteRoom(room);
+        return "redirect:/rooms";
+    }
+
     @GetMapping("/rooms")
-    public String roomsList(Model model) {
+    public String rooms(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
-        List<Room> rooms = roomService.getRoomsByOwnerName(auth.getName());
-        model.addAttribute("rooms", rooms);
-
+        model.addAttribute("rooms", roomService.getRoomsByOwnerName(auth.getName()));
         return "rooms";
     }
+
 
 }
 

@@ -29,6 +29,8 @@ public class ScrumPokerApplication {
             members.save(new Member("member01", encoder.encode("pswd"), "ROLE_MEMBER"));
             members.save(new Member("member02", encoder.encode("pswd"), "ROLE_MEMBER,ROLE_ADMIN"));
             members.save(new Member("member03", encoder.encode("pswd"), "ROLE_MEMBER"));
+
+
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(), "room01", members.findByName("member01").get().getId()));
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(), "room04", members.findByName("member01").get().getId()));
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(),  "room02", members.findByName("member02").get().getId()));
@@ -86,6 +88,15 @@ public class ScrumPokerApplication {
             room05.setCode(randomTextService.generateRandomText().getGeneratedText());
             room05.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room05);
+
+            Room room06 = new Room();
+            room06.setName("room06");
+            room06.setOwner(members.findByName("member02").get());
+            room06.setCode(randomTextService.generateRandomText().getGeneratedText());
+            List<Card> cardsList = new ArrayList<>((Collection) cards.findAll());
+            cardsList.remove(cardsList.size() - 1);
+            room06.setCards(cardsList);
+            rooms.save(room06);
 
         };
     }

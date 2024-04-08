@@ -1,8 +1,11 @@
 package hasebo.scrumpoker.controller;
 
 import hasebo.scrumpoker.model.Card;
+import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
 import hasebo.scrumpoker.repository.CardRepository;
+import hasebo.scrumpoker.service.MemberService;
+import hasebo.scrumpoker.service.RandomTextService;
 import hasebo.scrumpoker.service.RoomService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +20,12 @@ public class RoomController {
 
     private final RoomService roomService;
     private final CardRepository cardRepository;
+    private final MemberService memberService;
 
-    public RoomController(RoomService roomService, CardRepository cardRepository) {
+    public RoomController(RoomService roomService, CardRepository cardRepository, MemberService memberService) {
         this.roomService = roomService;
         this.cardRepository = cardRepository;
+        this.memberService = memberService;
     }
 
     @GetMapping("/room/{code}")
@@ -41,6 +46,26 @@ public class RoomController {
         Room existingRoom = roomService.getRoomInfoByCode(code);
         existingRoom.setCards(room.getCards());
         roomService.saveRoom(existingRoom);
+        return "redirect:/rooms";
+    }
+
+    @GetMapping("/newroom")
+public String newRoom(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("member", auth.getName());
+        model.addAttribute("room", new Room());
+        ArrayList<Card> allCards = new ArrayList<>((Collection) cardRepository.findAll());
+        model.addAttribute("allCards", allCards);
+        return "newroom";
+    }
+
+    @PostMapping("/saveNewRoom")
+    public String saveNewRoom(@ModelAttribute Room room) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        RandomTextService randomTextService = new RandomTextService();
+        room.setOwner(memberService.getMemberByName(auth.getName()));
+        room.setCode(randomTextService.generateRandomText().getGeneratedText()); //Jak skorzystać z RandomTextService z main?
+        roomService.saveRoom(room);
         return "redirect:/rooms";
     }
 

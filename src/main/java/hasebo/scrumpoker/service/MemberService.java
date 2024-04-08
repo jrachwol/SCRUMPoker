@@ -2,7 +2,9 @@ package hasebo.scrumpoker.service;
 
 import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.repository.MemberRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -15,7 +17,7 @@ public class MemberService {
         return memberRepository.findById(memberId).get();
     }
 
-    Member findByName (String ownerName) {
+    public Member getMemberByName (String ownerName) {
         return memberRepository.findByName(ownerName).get();
     }
 }

@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Dodaj pokój</title>
+
+    <script>
+        function checkAll(bx) {
+            var cbs = document.getElementsByTagName('input');
+            for(var i=0; i < cbs.length; i++) {
+                if(cbs[i].type == 'checkbox') {
+                    cbs[i].checked = bx.checked;
+                }
+            }
+        }
+    </script>
+
 </head>
 <body>
 
@@ -18,6 +30,11 @@
             <label th:for="${card.id}" th:text="${card.figure}"></label>
         </div>
         <br>
+
+        <div>
+            <input type="checkbox" onClick="checkAll(this)" /> Zaznacz wszystkie karty
+        </div>
+
         <button type="submit">Zapisz</button>
 
         <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>

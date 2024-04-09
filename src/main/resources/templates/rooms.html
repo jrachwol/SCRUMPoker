@@ -25,6 +25,7 @@
             <td> <span th:each=" card : ${room.getCards()} " th:text="${card.figure + ' '}"></span></td>
             <!-- Dodaj więcej kolumn zgodnie z atrybutami klasy Room -->
             <td><a th:href="@{/room/{code}(code=${room.getCode()})}">Edytuj</a></td>
+            <td><a th:href="@{/voting/{code}(code=${room.getCode()})}">Głosuj</a></td>
             <td><a class="delete-link" th:href="@{/deleteRoom/{code}(code=${room.getCode()})}" th:data-code="${room.getCode()}">Usuń</a></td>
         </tr>
 

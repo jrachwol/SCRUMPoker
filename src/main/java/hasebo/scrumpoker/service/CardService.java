@@ -1,8 +1,10 @@
 package hasebo.scrumpoker.service;
 
+import hasebo.scrumpoker.model.Card;
 import hasebo.scrumpoker.repository.CardRepository;
 import hasebo.scrumpoker.repository.RoomRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class CardService {
@@ -15,8 +17,8 @@ public class CardService {
         this.roomRepository = roomRepository;
     }
 
-//    public List<Card> getCardsByIds(List<Long> ids) {
-//        return cardRepository.findAllById(ids);
-//    }
+    public List<Card> getAllCards() {
+        return cardRepository.findAll();
+    }
 
 }

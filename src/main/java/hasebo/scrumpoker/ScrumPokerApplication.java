@@ -98,7 +98,18 @@ public class ScrumPokerApplication {
             room06.setCards(cardsList);
             rooms.save(room06);
 
+//            dodaj nowy pokój bez drugiej karty
+            Room room07 = new Room();
+            room07.setName("room07");
+            room07.setOwner(members.findByName("member02").get());
+            room07.setCode(randomTextService.generateRandomText().getGeneratedText());
+            List<Card> cardsList2 = new ArrayList<>((Collection) cards.findAll());
+            cardsList2.remove(cardsList2.size() - 2);
+            room07.setCards(cardsList2);
+            rooms.save(room07);
+
         };
+
     }
 
 }

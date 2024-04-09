@@ -27,10 +27,5 @@ public class DynamicTextController {
         return "randomText";
     }
 
-    @GetMapping("/")
-    public String homePageRedirect () {
-        return ("redirect:/dyntext");
-    }
-
 }
 

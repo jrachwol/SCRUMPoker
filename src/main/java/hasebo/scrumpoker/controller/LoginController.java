@@ -1,6 +1,7 @@
 package hasebo.scrumpoker.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,5 +22,11 @@ public class LoginController {
     public String homePageRedirect () {
         return ("redirect:/rooms");
     }
+
+//    @GetMapping("/login?logout")
+//    public String getLoginPageAfterLogout(Model model) {
+//        model.addAttribute("message", "You have been logged out.");
+//        return "login";
+//    }
 
 }

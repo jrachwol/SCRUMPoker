@@ -33,11 +33,6 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/newmember/**"),
                                 new AntPathRequestMatcher("//savenewmember/**")))
 
-
-//                .authorizeRequests(auth -> auth
-//                        .requestMatchers("/h2-console/**").permitAll()
-//                        .anyRequest().authenticated())
-
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/newmember/**").permitAll()
@@ -46,10 +41,17 @@ public class SecurityConfig {
 
 //                .formLogin(Customizer.withDefaults())
 
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll())
+
+                .logout(logout-> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID"))
 
                 .userDetailsService(jpaUserDetailsService)
                 .headers(headers -> headers.frameOptions(customizer -> customizer.sameOrigin()))

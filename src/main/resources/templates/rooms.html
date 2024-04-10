@@ -36,6 +36,9 @@
     <!-- Przycisk do dodawania nowego pokoju -->
     <a href="/newroom" class="btn btn-primary">Dodaj nowy pokój</a>
 
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Wyloguj" class="btn btn-primary">
+    </form>
 
 </body>
 

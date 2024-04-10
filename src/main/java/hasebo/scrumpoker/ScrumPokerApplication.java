@@ -33,7 +33,7 @@ public class ScrumPokerApplication {
             members.save(new Member("member01", encoder.encode("pswd"), "ROLE_MEMBER"));
             members.save(new Member("member02", encoder.encode("pswd"), "ROLE_MEMBER,ROLE_ADMIN"));
             members.save(new Member("member03", encoder.encode("pswd"), "ROLE_MEMBER"));
-
+            members.save(new Member("q", encoder.encode("q"), "ROLE_MEMBER"));
 
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(), "room01", members.findByName("member01").get().getId()));
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(), "room04", members.findByName("member01").get().getId()));

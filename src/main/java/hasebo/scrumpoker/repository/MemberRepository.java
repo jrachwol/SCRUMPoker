@@ -9,4 +9,6 @@ public interface MemberRepository extends CrudRepository<Member,Long> {
     Optional<Member> findByName(String name);
 
     Optional<Member> findById(Long id);
+
+    boolean existsByName(String name);
 }

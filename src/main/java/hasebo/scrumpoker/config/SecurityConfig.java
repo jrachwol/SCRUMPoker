@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -26,13 +27,21 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+//                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+                .csrf(csrf ->     csrf.ignoringRequestMatchers(
+                                new AntPathRequestMatcher("/h2-console/**"),
+                                new AntPathRequestMatcher("/newmember/**"),
+                                new AntPathRequestMatcher("//savenewmember/**")))
+
+
 //                .authorizeRequests(auth -> auth
 //                        .requestMatchers("/h2-console/**").permitAll()
 //                        .anyRequest().authenticated())
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/newmember/**").permitAll()
+                        .requestMatchers("/savenewmember/**").permitAll()
                         .anyRequest().authenticated())
 
 //                .formLogin(Customizer.withDefaults())

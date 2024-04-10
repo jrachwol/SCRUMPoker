@@ -22,7 +22,7 @@
 
     <form action="#" th:action="@{/saveNewRoom}" th:object="${room}" method="post">
         <label for="name">Nazwa:</label>
-        <input type="text" id="name" th:field="*{name}" required/>
+        <input type="text" id="name" th:field="*{name}" placeholder="nazwa pokoju" required/>
         <br>
         <br>
         <div th:each="card : ${allCards}" style="display: inline-block; margin-right: 10px;">

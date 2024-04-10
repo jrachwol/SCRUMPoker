@@ -2,7 +2,6 @@ package hasebo.scrumpoker.controller;
 
 import hasebo.scrumpoker.model.Card;
 import hasebo.scrumpoker.model.Room;
-import hasebo.scrumpoker.repository.CardRepository;
 import hasebo.scrumpoker.service.CardService;
 import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
@@ -20,20 +19,25 @@ import java.util.List;
 public class RoomController {
 
     private final RoomService roomService;
-    private final CardRepository cardRepository;
     private final CardService cardService;
     private final MemberService memberService;
+    private final RandomTextService randomTextService;
 
-    public RoomController(RoomService roomService, CardRepository cardRepository, MemberService memberService, CardService cardService) {
+    public RoomController(RoomService roomService,
+                          MemberService memberService,
+                          CardService cardService,
+                          RandomTextService randomTextService) {
         this.roomService = roomService;
-        this.cardRepository = cardRepository;
         this.memberService = memberService;
         this.cardService = cardService;
+        this.randomTextService = randomTextService;
     }
 
 // dodaj /voting/{code}
     @GetMapping("/voting/{code}")
     public String voting(@PathVariable("code") String code, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("member", auth.getName());
         Room room = roomService.getRoomInfoByCode(code);
         ArrayList<Card> roomCards = new ArrayList<>((Collection) room.getCards());
         model.addAttribute("room", room);
@@ -44,7 +48,6 @@ public class RoomController {
     @GetMapping("/room/{code}")
     public String roomInfo(@PathVariable("code") String code, Model model) {
         Room room = roomService.getRoomInfoByCode(code);
-        System.out.println(room.getOwner().getName());
 //        List<Card> allCards = new ArrayList<>((Collection) cardRepository.findAll());
         List<Card> allCards = new ArrayList<>(cardService.getAllCards());
         model.addAttribute("room", room);
@@ -67,9 +70,9 @@ public class RoomController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
         Room room = new Room();
-        room.setName("room");
+//        room.setName("room");
         model.addAttribute("room", room);
-        ArrayList<Card> allCards = new ArrayList<>((Collection) cardRepository.findAll());
+        ArrayList<Card> allCards = new ArrayList<>((Collection) cardService.getAllCards());
         model.addAttribute("allCards", allCards);
         return "newroom";
     }
@@ -77,7 +80,6 @@ public class RoomController {
     @PostMapping("/saveNewRoom")
     public String saveNewRoom(@ModelAttribute Room room) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        RandomTextService randomTextService = new RandomTextService();
         room.setOwner(memberService.getMemberByName(auth.getName()));
         room.setCode(randomTextService.generateRandomText().getGeneratedText()); //Jak skorzystać z RandomTextService z main?
         roomService.saveRoom(room);

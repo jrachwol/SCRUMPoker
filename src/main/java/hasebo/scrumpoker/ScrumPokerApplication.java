@@ -23,8 +23,12 @@ public class ScrumPokerApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(MemberRepository members, PasswordEncoder encoder, RoomRepository rooms, CardRepository cards) {
-        RandomTextService randomTextService = new RandomTextService();
+    CommandLineRunner commandLineRunner(MemberRepository members,
+                                        PasswordEncoder encoder,
+                                        RoomRepository rooms,
+                                        CardRepository cards,
+                                        RandomTextService randomTextService) {
+//        RandomTextService randomTextService = new RandomTextService();
         return args -> {
             members.save(new Member("member01", encoder.encode("pswd"), "ROLE_MEMBER"));
             members.save(new Member("member02", encoder.encode("pswd"), "ROLE_MEMBER,ROLE_ADMIN"));

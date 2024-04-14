@@ -3,7 +3,6 @@ package hasebo.scrumpoker.config;
 import hasebo.scrumpoker.service.JpaUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf ->     csrf.ignoringRequestMatchers(
                                 new AntPathRequestMatcher("/h2-console/**"),
                                 new AntPathRequestMatcher("/newmember/**"),
-                                new AntPathRequestMatcher("//savenewmember/**")))
+                                new AntPathRequestMatcher("/savenewmember/**")))
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()

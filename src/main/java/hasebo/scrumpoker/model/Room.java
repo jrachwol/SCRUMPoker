@@ -26,6 +26,12 @@ public class Room {
             inverseJoinColumns = @JoinColumn(name = "card_id"))
     private List<Card> cards = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "room_member",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id"))
+    private List<Member> voters = new ArrayList<>();
 
     public Room() {
     }
@@ -70,6 +76,10 @@ public class Room {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public List<Member> getVoters() {
+        return voters;
     }
 
     @Override

@@ -6,21 +6,30 @@
 </head>
 <body>
 
-        <!--    Przekazać komplet kart, jeśli karta dostępna w pokoju, chckbx zaznaczony -->
         <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>
         <h2 th:text="'SCRUM Room Name: ' + ${room.getName()}"></h2>
         <h2 th:text="'SCRUM Room Code: ' + ${room.getCode()}"></h2>
 
-        <form action="#" th:action="@{/voting/{code}(code=${room.getCode()})}" th:object="${room}" method="get"> <!-- th:object="${room}" -->
-            <div th:each="card : ${room.getCards()}">
-                <input type="radio" th:value="${card.getFigure()}" th:text="${card.getFigure()}" name="card" />
+        <form action="#" th:action="@{/saveVote/{code}(code=${room.getCode()})}" th:object="${room}" method="post">
+            <div th:each="card, stat : ${room.getCards()}">
+            <input type="radio" th:value="${card.getId()}" th:text="${card.getFigure()}" name="card" th:required="${stat.first}" th:checked="${card != null && selectedCard != null && card.getId() == selectedCard.getId()}"/>
             </div>
 
             <button type="submit">Głosuj</button>
 
+
+            <ul th:each="voter : ${voters}">
+                <li>
+                    <span th:text="${voter.name}"></span>
+                    <a th:href="@{/deleteVoter/{id}/{code} (id=${voter.id}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
+                </li>
+            </ul>
+
             <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>
 
+
         </form>
+
 
 </body>
 </html>

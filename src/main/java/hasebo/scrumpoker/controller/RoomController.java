@@ -1,16 +1,21 @@
 package hasebo.scrumpoker.controller;
 
 import hasebo.scrumpoker.model.Card;
+import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
+import hasebo.scrumpoker.model.Vote;
+import hasebo.scrumpoker.repository.VoteRepository;
 import hasebo.scrumpoker.service.CardService;
 import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
 import hasebo.scrumpoker.service.RoomService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,33 +27,23 @@ public class RoomController {
     private final CardService cardService;
     private final MemberService memberService;
     private final RandomTextService randomTextService;
+    private final VoteRepository voteRepository;
 
     public RoomController(RoomService roomService,
                           MemberService memberService,
                           CardService cardService,
-                          RandomTextService randomTextService) {
+                          RandomTextService randomTextService,
+                          VoteRepository voteRepository) {
         this.roomService = roomService;
         this.memberService = memberService;
         this.cardService = cardService;
         this.randomTextService = randomTextService;
-    }
-
-// dodaj /voting/{code}
-    @GetMapping("/voting/{code}")
-    public String voting(@PathVariable("code") String code, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("member", auth.getName());
-        Room room = roomService.getRoomInfoByCode(code);
-        ArrayList<Card> roomCards = new ArrayList<>((Collection) room.getCards());
-        model.addAttribute("room", room);
-        model.addAttribute("roomCards", roomCards);
-        return "voting";
+        this.voteRepository = voteRepository;
     }
 
     @GetMapping("/room/{code}")
     public String roomInfo(@PathVariable("code") String code, Model model) {
         Room room = roomService.getRoomInfoByCode(code);
-//        List<Card> allCards = new ArrayList<>((Collection) cardRepository.findAll());
         List<Card> allCards = new ArrayList<>(cardService.getAllCards());
         model.addAttribute("room", room);
         model.addAttribute("allCards", allCards);

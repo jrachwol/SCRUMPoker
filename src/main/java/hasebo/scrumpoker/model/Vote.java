@@ -21,7 +21,7 @@ public class Vote {
     private Room room;
 
     @ManyToOne
-    @JoinColumn(name = "card_id", nullable = false)
+    @JoinColumn(name = "card_id", nullable = true)
     private Card vote;
 
     @ManyToOne

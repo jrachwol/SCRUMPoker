@@ -1,6 +1,7 @@
 package hasebo.scrumpoker.controller;
 
 import hasebo.scrumpoker.model.*;
+import hasebo.scrumpoker.repository.CardRepository;
 import hasebo.scrumpoker.repository.RoomRepository;
 import hasebo.scrumpoker.repository.VoteRepository;
 import hasebo.scrumpoker.repository.VotingRepository;
@@ -30,29 +31,30 @@ public class VotingController {
     private final VoteRepository voteRepository;
     private final VotingRepository votingRepository;
     private final RoomRepository roomRepository;
+    private final CardService cardService;
+    private final CardRepository cardRepository;
 
     public VotingController(RoomService roomService,
                             CardService cardService,
                             MemberService memberService,
                             RandomTextService randomTextService,
                             VoteRepository voteRepository,
-                            VotingRepository votingRepository, RoomRepository roomRepository) {
+                            VotingRepository votingRepository,
+                            RoomRepository roomRepository,
+                            CardRepository cardRepository) {
         this.roomService = roomService;
+        this.cardService = cardService;
         this.memberService = memberService;
         this.voteRepository = voteRepository;
         this.votingRepository = votingRepository;
         this.roomRepository = roomRepository;
+        this.cardRepository = cardRepository;
     }
 
     @GetMapping("/voting/{code}")
     public String voting(@PathVariable("code") String code,
                          HttpSession httpSession,
                          Model model) {
-        String lastVisitedCode = (String) httpSession.getAttribute("lastVisitedCode");
-        if (lastVisitedCode == null || !lastVisitedCode.equals(code)) {
-            httpSession.removeAttribute("selectedCard");
-            httpSession.setAttribute("lastVisitedCode", code);
-        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
         Room room = roomService.getRoomInfoByCode(code);
@@ -61,6 +63,7 @@ public class VotingController {
         model.addAttribute("roomCards", roomCards);
         Card card = (Card) httpSession.getAttribute("selectedCard");
         model.addAttribute("selectedCard", card);
+
         String username = auth.getName();
         Member currentMember = memberService.getMemberByName(username);
         if (!room.getVoters().contains(currentMember)) {
@@ -69,6 +72,37 @@ public class VotingController {
         roomRepository.save(room);
         List<Member> voters = room.getVoters();
         model.addAttribute("voters", voters);
+
+        Room votingRoom = roomService.getRoomInfoByCode(code);
+        Optional<Voting> optionalVoting = votingRepository.findById(1L);
+        Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(currentMember, optionalVoting.get(), votingRoom);
+        if(!existingVoteOptional.isPresent()){
+            Vote vote = new Vote(currentMember, votingRoom, card);
+            optionalVoting.ifPresent(vote::setVoting);
+            voteRepository.save(vote);
+        } else {
+            Vote existingVote = existingVoteOptional.get();
+            Card cardVote = existingVote.getVote();
+            if(cardVote!=null){
+                Optional<Card> optionalCard = cardRepository.findById(cardVote.getId());
+                if(optionalCard.isPresent()) {
+                    Card selectedCard = optionalCard.get();
+                    model.addAttribute("selectedCard", selectedCard);
+                }
+            }
+
+//            Optional<Card> optionalCard = cardRepository.findById(existingVoteOptional.get().getVote().getId());
+//            if(optionalCard.isPresent()) {
+//                Card selectedCard = optionalCard.get();
+//                model.addAttribute("selectedCard", selectedCard);
+//            }
+        }
+
+        Optional<List<Vote>> votes = voteRepository.findByVotingAndRoom(optionalVoting, votingRoom);
+        if(votes.isPresent()){
+            List<Vote> votesList = votes.get();
+            model.addAttribute("votes", votesList);
+        }
         return "voting";
     }
 
@@ -112,6 +146,14 @@ public class VotingController {
         Room room = roomService.getRoomInfoByCode(code);
         room.getVoters().removeIf(voter -> voter.getId().equals(id));
         roomRepository.save(room);
+
+        Optional<Voting> optionalVoting = votingRepository.findById(1L);
+        Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(memberService.getMemberById(id), optionalVoting.get(), room);
+        if (existingVoteOptional.isPresent()) {
+            Vote voteToDelete = existingVoteOptional.get();
+            voteRepository.delete(voteToDelete);
+        }
+
         return "redirect:/voting/" + code;
     }
 

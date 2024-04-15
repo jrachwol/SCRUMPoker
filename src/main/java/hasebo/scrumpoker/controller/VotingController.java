@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,12 +91,6 @@ public class VotingController {
                     model.addAttribute("selectedCard", selectedCard);
                 }
             }
-
-//            Optional<Card> optionalCard = cardRepository.findById(existingVoteOptional.get().getVote().getId());
-//            if(optionalCard.isPresent()) {
-//                Card selectedCard = optionalCard.get();
-//                model.addAttribute("selectedCard", selectedCard);
-//            }
         }
 
         Optional<List<Vote>> votes = voteRepository.findByVotingAndRoom(optionalVoting, votingRoom);
@@ -110,7 +105,6 @@ public class VotingController {
     public String saveVorte(@PathVariable("code") String code,
                             @ModelAttribute Card card,
                             @ModelAttribute Card selectedCard,
-                            HttpSession httpSession,
                             Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Member voter = memberService.getMemberByName(auth.getName());
@@ -121,7 +115,6 @@ public class VotingController {
 //            vote.setVoting(optionalVoting.get());
 //        }
         optionalVoting.ifPresent(vote::setVoting); // jeśli zakomentowane powyżej bez else
-//        voteRepository.save(vote);
         Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(voter, optionalVoting.get(), votingRoom);
         if(existingVoteOptional.isPresent()){
             Vote existingVote = existingVoteOptional.get();
@@ -133,7 +126,6 @@ public class VotingController {
             voteRepository.save(vote);
         }
         model.addAttribute("selectedCard", card);
-        httpSession.setAttribute("selectedCard", card);
         return "redirect:/voting/" + code;
     }
 

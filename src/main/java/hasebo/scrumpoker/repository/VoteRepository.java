@@ -5,7 +5,6 @@ import hasebo.scrumpoker.model.Room;
 import hasebo.scrumpoker.model.Vote;
 import hasebo.scrumpoker.model.Voting;
 import org.springframework.data.repository.CrudRepository;
-
 import java.util.List;
 import java.util.Optional;
 

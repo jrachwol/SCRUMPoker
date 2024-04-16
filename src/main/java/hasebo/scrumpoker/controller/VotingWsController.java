@@ -10,6 +10,7 @@ import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
 import hasebo.scrumpoker.service.RoomService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class VotingWsController {
 
     private final RoomService roomService;
@@ -32,25 +34,7 @@ public class VotingWsController {
     private final VoteRepository voteRepository;
     private final VotingRepository votingRepository;
     private final RoomRepository roomRepository;
-    private final CardService cardService;
     private final CardRepository cardRepository;
-
-    public VotingWsController(RoomService roomService,
-                            CardService cardService,
-                            MemberService memberService,
-                            RandomTextService randomTextService,
-                            VoteRepository voteRepository,
-                            VotingRepository votingRepository,
-                            RoomRepository roomRepository,
-                            CardRepository cardRepository) {
-        this.roomService = roomService;
-        this.cardService = cardService;
-        this.memberService = memberService;
-        this.voteRepository = voteRepository;
-        this.votingRepository = votingRepository;
-        this.roomRepository = roomRepository;
-        this.cardRepository = cardRepository;
-    }
 
     @MessageMapping("/hello")
     @SendTo("/topic/votes")

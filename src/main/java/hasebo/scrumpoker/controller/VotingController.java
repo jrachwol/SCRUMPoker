@@ -10,6 +10,7 @@ import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
 import hasebo.scrumpoker.service.RoomService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class VotingController {
 
     private final RoomService roomService;
@@ -35,23 +37,6 @@ public class VotingController {
     private final RoomRepository roomRepository;
     private final CardService cardService;
     private final CardRepository cardRepository;
-
-    public VotingController(RoomService roomService,
-                            CardService cardService,
-                            MemberService memberService,
-                            RandomTextService randomTextService,
-                            VoteRepository voteRepository,
-                            VotingRepository votingRepository,
-                            RoomRepository roomRepository,
-                            CardRepository cardRepository) {
-        this.roomService = roomService;
-        this.cardService = cardService;
-        this.memberService = memberService;
-        this.voteRepository = voteRepository;
-        this.votingRepository = votingRepository;
-        this.roomRepository = roomRepository;
-        this.cardRepository = cardRepository;
-    }
 
     @GetMapping("/voting/{code}")
     public String voting(@PathVariable("code") String code,
@@ -105,17 +90,11 @@ public class VotingController {
     @PostMapping("/saveVote/{code}")
     public String saveVorte(@PathVariable("code") String code,
                             @ModelAttribute Card card,
-                            @ModelAttribute Card selectedCard,
                             Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Member voter = memberService.getMemberByName(auth.getName());
         Room votingRoom = roomService.getRoomInfoByCode(code);
-        Vote vote = new Vote(voter, votingRoom, card);
         Optional<Voting> optionalVoting = votingRepository.findById(1L);
-//        if(optionalVoting.isPresent()){
-//            vote.setVoting(optionalVoting.get());
-//        }
-        optionalVoting.ifPresent(vote::setVoting); // jeśli zakomentowane powyżej bez else
         Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(voter, optionalVoting.get(), votingRoom);
         if(existingVoteOptional.isPresent()){
             Vote existingVote = existingVoteOptional.get();
@@ -123,10 +102,10 @@ public class VotingController {
             voteRepository.save(existingVote);  // update existing vote
         } else {
             // no existing vote, creating new
+            Vote vote = new Vote(voter, votingRoom, card);
             optionalVoting.ifPresent(vote::setVoting);
             voteRepository.save(vote);
         }
-        model.addAttribute("selectedCard", card);
         return "redirect:/voting/" + code;
     }
 

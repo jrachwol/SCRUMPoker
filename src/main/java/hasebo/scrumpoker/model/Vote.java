@@ -3,8 +3,6 @@ package hasebo.scrumpoker.model;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @Entity
 @Table(name="vote")
 @NoArgsConstructor

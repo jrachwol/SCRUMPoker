@@ -2,7 +2,6 @@ package hasebo.scrumpoker.repository;
 
 import hasebo.scrumpoker.model.Member;
 import org.springframework.data.repository.CrudRepository;
-
 import java.util.Optional;
 
 public interface MemberRepository extends CrudRepository<Member, Long> {

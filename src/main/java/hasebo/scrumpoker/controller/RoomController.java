@@ -1,21 +1,17 @@
 package hasebo.scrumpoker.controller;
 
 import hasebo.scrumpoker.model.Card;
-import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
-import hasebo.scrumpoker.model.Vote;
 import hasebo.scrumpoker.repository.VoteRepository;
 import hasebo.scrumpoker.service.CardService;
 import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
 import hasebo.scrumpoker.service.RoomService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

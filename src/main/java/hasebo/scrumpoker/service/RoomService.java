@@ -4,23 +4,18 @@ import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
 import hasebo.scrumpoker.repository.MemberRepository;
 import hasebo.scrumpoker.repository.RoomRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RoomService {
 
     private final RoomRepository roomRepository;
-//    czy zamiast MemberRepository powinno być MemberService?
     private final MemberRepository memberRepository;
-
-    public RoomService(RoomRepository roomRepository, MemberRepository memberRepository) {
-        this.roomRepository = roomRepository;
-        this.memberRepository = memberRepository;
-    }
 
     public Room getRoomInfoById(Long roomId) {
         return roomRepository.findById(roomId).get();
@@ -34,14 +29,7 @@ public class RoomService {
         return roomRepository.findByOwnerId(ownerId).get();
     }
 
-//    Bez Optional<> błąd w return
     public List<Room> getRoomsByOwnerName(String ownerName) {
-//        działą, choć zwracana lista bez sprawdzania czy zwraca null
-//        return getRoomsByOwnerId(memberRepository.findByName(ownerName).get().getId());
-
-//        błąd z Optional<>
-//        return roomRepository.findByOwnerId(memberRepository.findByName(ownerName).get().getId()) // .get();
-
         Optional<Member> member = memberRepository.findByName(ownerName);
         if (member.isPresent()) {
             Optional<List<Room>> rooms = roomRepository.findByOwnerId(member.get().getId());

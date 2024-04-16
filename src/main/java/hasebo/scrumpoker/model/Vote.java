@@ -1,11 +1,13 @@
 package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
 @Entity
 @Table(name="vote")
+@NoArgsConstructor
 public class Vote {
 
     @Id
@@ -32,9 +34,6 @@ public class Vote {
         this.voter = voter;
         this.room = room;
         this.vote = vote;
-    }
-
-    public Vote() {
     }
 
     public Member getVoter() {

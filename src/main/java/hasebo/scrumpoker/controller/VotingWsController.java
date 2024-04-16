@@ -17,16 +17,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class VotingController {
+public class VotingWsController {
 
     private final RoomService roomService;
     private final MemberService memberService;
@@ -36,7 +35,7 @@ public class VotingController {
     private final CardService cardService;
     private final CardRepository cardRepository;
 
-    public VotingController(RoomService roomService,
+    public VotingWsController(RoomService roomService,
                             CardService cardService,
                             MemberService memberService,
                             RandomTextService randomTextService,
@@ -53,7 +52,13 @@ public class VotingController {
         this.cardRepository = cardRepository;
     }
 
-    @GetMapping("/voting/{code}")
+    @MessageMapping("/hello")
+    @SendTo("/topic/votes")
+    public String voting(String vote) throws Exception {
+        return vote;
+    }
+
+    @GetMapping("/votingws/{code}")
     public String voting(@PathVariable("code") String code,
                          HttpSession httpSession,
                          Model model) {
@@ -99,55 +104,8 @@ public class VotingController {
             List<Vote> votesList = votes.get();
             model.addAttribute("votes", votesList);
         }
-        return "voting";
-    }
-
-    @PostMapping("/saveVote/{code}")
-    public String saveVorte(@PathVariable("code") String code,
-                            @ModelAttribute Card card,
-                            @ModelAttribute Card selectedCard,
-                            Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Member voter = memberService.getMemberByName(auth.getName());
-        Room votingRoom = roomService.getRoomInfoByCode(code);
-        Vote vote = new Vote(voter, votingRoom, card);
-        Optional<Voting> optionalVoting = votingRepository.findById(1L);
-//        if(optionalVoting.isPresent()){
-//            vote.setVoting(optionalVoting.get());
-//        }
-        optionalVoting.ifPresent(vote::setVoting); // jeśli zakomentowane powyżej bez else
-        Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(voter, optionalVoting.get(), votingRoom);
-        if(existingVoteOptional.isPresent()){
-            Vote existingVote = existingVoteOptional.get();
-            existingVote.setVote(card);  // set new vote
-            voteRepository.save(existingVote);  // update existing vote
-        } else {
-            // no existing vote, creating new
-            optionalVoting.ifPresent(vote::setVoting);
-            voteRepository.save(vote);
-        }
-        model.addAttribute("selectedCard", card);
-        return "redirect:/voting/" + code;
-    }
-
-    @GetMapping("/deleteVoter/{id}/{code}")
-    public String deleteVoter(@PathVariable("id") Long id,
-                              @PathVariable("code") String code,
-                              HttpSession httpSession,
-                              Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Room room = roomService.getRoomInfoByCode(code);
-        room.getVoters().removeIf(voter -> voter.getId().equals(id));
-        roomRepository.save(room);
-
-        Optional<Voting> optionalVoting = votingRepository.findById(1L);
-        Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(memberService.getMemberById(id), optionalVoting.get(), room);
-        if (existingVoteOptional.isPresent()) {
-            Vote voteToDelete = existingVoteOptional.get();
-            voteRepository.delete(voteToDelete);
-        }
-
-        return "redirect:/voting/" + code;
+        return "votingws";
     }
 
 }
+

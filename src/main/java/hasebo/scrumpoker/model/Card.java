@@ -1,12 +1,14 @@
 package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "card")
+@NoArgsConstructor
 public class Card {
 
     @Id
@@ -17,9 +19,6 @@ public class Card {
     @ManyToMany(mappedBy = "cards")
 //    private Set<Room> rooms = new HashSet<>();
     private List<Room> rooms = new ArrayList<>();
-
-    public Card() {
-    }
 
     public Card(Long id, String figure) {
         this.id = id;

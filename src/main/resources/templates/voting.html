@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>SCRUM Voting</title>
 </head>
+
 <body>
 
         <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>
@@ -17,7 +18,6 @@
 
             <button type="submit">Głosuj</button>
 
-
             <ul th:each="voter : ${voters}">
                 <li>
                     <span th:text="${voter.name}"></span>
@@ -25,23 +25,15 @@
                 </li>
             </ul>
 
-
-
             <ul th:each="vote : ${votes}">
-            <tr>
                 <td th:text="${vote.getVoter().getName()}"></td>
                 <td th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'Oczekiwanie na głos'}"></td>
                 <a th:href="@{/deleteVoter/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
-            </tr>
             </ul>
-
-            <!--... existing HTML below ...-->
 
             <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>
 
-
         </form>
-
 
 </body>
 </html>

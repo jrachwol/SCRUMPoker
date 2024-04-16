@@ -1,12 +1,14 @@
 package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="room")
+@NoArgsConstructor
 public class Room {
 
     @Id
@@ -32,9 +34,6 @@ public class Room {
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     private List<Member> voters = new ArrayList<>();
-
-    public Room() {
-    }
 
     public Room(String code, String name, Member owner) {
         this.code = code;

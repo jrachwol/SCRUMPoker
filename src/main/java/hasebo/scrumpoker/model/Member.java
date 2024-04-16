@@ -1,12 +1,14 @@
 package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="member")
+@NoArgsConstructor
 public class Member {
 
     @Id
@@ -19,10 +21,6 @@ public class Member {
 
     @OneToMany(mappedBy = "owner")
     private List<Room> rooms = new ArrayList<>();
-
-    public Member() {
-
-    }
 
     public Member(String name, String password, String roles) {
         this.name = name;

@@ -1,5 +1,6 @@
 package hasebo.scrumpoker.model;
 
+import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,7 @@ public class Vote {
 
     @ManyToOne
     @JoinColumn(name = "voting_id", nullable = false)
+//    @Expose(serialize = false, deserialize = false)
     private Voting voting;
 
     public Vote(Member voter, Room room, Card vote) {

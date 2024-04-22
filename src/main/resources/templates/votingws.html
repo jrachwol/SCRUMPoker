@@ -2,11 +2,10 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SCRUM Voting</title>
+    <title>SCRUM Voting WS</title>
     <link href="/main.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-<!--    <script src="/app.js"></script>-->
 </head>
 
 <body>
@@ -14,47 +13,49 @@
         <h2 th:text="'SCRUM Room Name: ' + ${room.getName()}"></h2>
         <h2 th:text="'SCRUM Room Code: ' + ${room.getCode()}"></h2>
 
-        <form action="#" th:action="@{/saveVote/{code}(code=${room.getCode()})}" th:object="${room}" method="post">
-            <div th:each="card, stat : ${room.getCards()}">
-            <input type="radio" th:value="${card.getFigure()}" th:text="${card.getFigure()}" name="card" th:required="${stat.first}" th:checked="${card != null && selectedCard != null && card.getId() == selectedCard.getId()}"/>
+        <form action="#" th:action="@{/saveVoteWs/{code}(code=${room.getCode()})}" th:object="${room}" method="post">
+            <div th:id=${card.getFigure()} th:each="card, stat : ${room.getCards()}">
+            <input type="radio" th:value="${card.getId()}" th:text="${card.getFigure()}" name="card" th:required="${stat.first}" th:checked="${card != null && selectedCard != null && card.getId() == selectedCard.getId()}"/>
             </div>
 
-            <button type="submit">Głosuj</button>
+<!--            <button type="submit">Głosuj a</button>-->
+<!--            <button id="send-btn" type="submit">Głosuj WS</button>-->
 
-            <ul th:each="voter : ${voters}">
-                <li>
-                    <span th:text="${voter.name}"></span>
-                    <a th:href="@{/deleteVoter/{id}/{code} (id=${voter.id}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
-                </li>
-            </ul>
-
-            <ul th:each="vote : ${votes}">
-                <td th:text="${vote.getVoter().getName()}"></td>
-                <td th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'Oczekiwanie na głos'}"></td>
-                <a th:href="@{/deleteVoter/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
-            </ul>
+            <table>
+                <tbody id="voting">
+                    <tr th:each="vote : ${votes}">
+                        <td th:text="${vote.getVoter().getName()}"></td>
+                        <td>
+                            <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'Oczekiwanie na głos'}"></div>
+                        <td>
+                        <td>
+                            <a th:href="@{/deleteVoterws/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
             <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>
 
         </form>
 
+<!--        <tr th:each="vote : ${votes}">-->
+<!--            <td th:text="${vote.getVoter().getName()}"></td>-->
+<!--            <td>-->
+<!--                <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'Oczekiwanie na głos'}"></div>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <form action="#" th:action="@{/saveVoteWs/{code}(code=${room.getCode()})}" th:object="${room}" method="post">-->
+<!--                    <a th:href="@{/deleteVoter/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>-->
+<!--                    <button type="submit">Usuń</button>-->
+<!--                </form>-->
+<!--            </td>-->
+<!--        </tr>-->
+
 
         <button id="connect" class="btn btn-default" type="submit">Connect</button>
-        <button id="send-btn">Send</button>
 
-<!--        <div class="row">-->
-<!--            <div class="col-md-12">-->
-<!--                <table id="conversation" class="table table-striped">-->
-<!--                    <thead>-->
-<!--                    <tr>-->
-<!--                        <th>Votes</th>-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody id="greetings">-->
-<!--                    </tbody>-->
-<!--                </table>-->
-<!--            </div>-->
-<!--        </div>-->
+<!--        <button id="send-btn" type="submit">Głosuj WS</button>-->
 
                 <table id="conversation">
                     <thead>
@@ -66,8 +67,24 @@
                     </tbody>
                 </table>
 
+        <script th:inline="javascript">
+            $('input[type=radio][name=card]').change(function() {
+                // Wykonaj kod tutaj
+               sendVote();
+                // "Kliknij" przycisk submit - symuluje kliknięcie przycisku submit w formularzu
+                $('form').submit();
+            });
+        </script>
+
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            window.voter = [[${voter}]];
+            window.room = [[${room.getName()}]];
+            window.roomCode = [[${room.getCode}]];
+            /*]]>*/
+        </script>
 
         <script src="/app.js"></script>
-
 </body>
 </html>

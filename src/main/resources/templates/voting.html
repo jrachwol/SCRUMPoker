@@ -18,12 +18,12 @@
 
             <button type="submit">Głosuj</button>
 
-            <ul th:each="voter : ${voters}">
-                <li>
-                    <span th:text="${voter.name}"></span>
-                    <a th:href="@{/deleteVoter/{id}/{code} (id=${voter.id}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
-                </li>
-            </ul>
+<!--            <ul th:each="voter : ${voters}">-->
+<!--                <li>-->
+<!--                    <span th:text="${voter.name}"></span>-->
+<!--                    <a th:href="@{/deleteVoter/{id}/{code} (id=${voter.id}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>-->
+<!--                </li>-->
+<!--            </ul>-->
 
             <ul th:each="vote : ${votes}">
                 <td th:text="${vote.getVoter().getName()}"></td>

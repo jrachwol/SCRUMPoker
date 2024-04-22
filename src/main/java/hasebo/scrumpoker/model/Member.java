@@ -1,5 +1,6 @@
 package hasebo.scrumpoker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class Member {
 //    private String lastView;
 
     @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private List<Room> rooms = new ArrayList<>();
 
     public Member(String name, String password, String roles) {

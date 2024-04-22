@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry.addEndpoint("/votes-websocket");
         stompEndpointRegistry.addEndpoint("/room-access-websocket");
-        stompEndpointRegistry.addEndpoint("/room-roles-websocket");
+        stompEndpointRegistry.addEndpoint("/votings-websocket");
     }
 
 

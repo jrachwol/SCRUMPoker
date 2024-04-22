@@ -1,5 +1,6 @@
 package hasebo.scrumpoker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Card {
     private String figure;
 
     @ManyToMany(mappedBy = "cards")
+    @JsonIgnore
 //    private Set<Room> rooms = new HashSet<>();
     private List<Room> rooms = new ArrayList<>();
 

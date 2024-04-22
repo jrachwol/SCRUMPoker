@@ -17,9 +17,8 @@ public class Voting {
     private String description;
     private boolean active;
 
-//  dodaj głosy uczestników głosowania nazywanych member zapisywanych w Vote
-    @OneToMany(mappedBy = "voting")
-    private List<Vote> votes;
+//    @OneToMany(mappedBy = "voting")
+//    private List<Vote> votes;
 
     public Voting(String title, String description, boolean active) {
         this.title = title;

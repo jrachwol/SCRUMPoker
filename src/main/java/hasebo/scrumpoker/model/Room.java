@@ -1,12 +1,14 @@
 package hasebo.scrumpoker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
+import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="room")
+@NoArgsConstructor
 public class Room {
 
     @Id
@@ -24,11 +26,15 @@ public class Room {
             name = "card_room",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id"))
+    @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
-
-    public Room() {
-    }
+//    @ManyToMany
+//    @JoinTable(
+//            name = "room_member",
+//            joinColumns = @JoinColumn(name = "room_id"),
+//            inverseJoinColumns = @JoinColumn(name = "member_id"))
+//    private List<Member> voters = new ArrayList<>();
 
     public Room(String code, String name, Member owner) {
         this.code = code;
@@ -71,6 +77,10 @@ public class Room {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
+
+//    public List<Member> getVoters() {
+//        return voters;
+//    }
 
     @Override
     public String toString() {

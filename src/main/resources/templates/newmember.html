@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Nowy użytkownik</title>
+</head>
+<body>
+
+<div th:if="${error}" th:text="${error}" class="error-message"></div>
+
+<form action="#" th:action="@{/savenewmember}" th:object="${member}" method="post">
+    <label for="name">Nazwa:</label>
+    <input type="text" id="name" th:field="*{name}" placeholder="nazwa użytkownika" required/>
+
+    <label for="name">Hasło:</label>
+    <input type="password" id="password" th:field="*{password}" placeholder="hasło" required/>
+
+
+    <button type="submit">Zarejestruj</button>
+
+    <h2><a  th:href="@{/login}">Anuluj</a></h2>
+
+</form>
+
+</body>
+</html>

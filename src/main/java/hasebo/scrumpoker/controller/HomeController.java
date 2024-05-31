@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
+
     @PreAuthorize("hasRole('ROLE_MEMBER')")
     @GetMapping("/member")
     public String member() {

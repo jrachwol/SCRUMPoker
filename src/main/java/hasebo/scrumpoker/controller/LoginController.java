@@ -23,10 +23,4 @@ public class LoginController {
         return ("redirect:/rooms");
     }
 
-//    @GetMapping("/login?logout")
-//    public String getLoginPageAfterLogout(Model model) {
-//        model.addAttribute("message", "You have been logged out.");
-//        return "login";
-//    }
-
 }

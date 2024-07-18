@@ -29,12 +29,9 @@ public class Room {
     @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "room_member",
-//            joinColumns = @JoinColumn(name = "room_id"),
-//            inverseJoinColumns = @JoinColumn(name = "member_id"))
-//    private List<Member> voters = new ArrayList<>();
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votes = new ArrayList<>();
 
     public Room(String code, String name, Member owner) {
         this.code = code;

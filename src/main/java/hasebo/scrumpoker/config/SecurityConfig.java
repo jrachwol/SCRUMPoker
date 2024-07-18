@@ -26,7 +26,6 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-//                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
                 .csrf(csrf ->     csrf.ignoringRequestMatchers(
                                 new AntPathRequestMatcher("/h2-console/**"),
                                 new AntPathRequestMatcher("/newmember/**"),
@@ -38,15 +37,12 @@ public class SecurityConfig {
                         .requestMatchers("/savenewmember/**").permitAll()
                         .anyRequest().authenticated())
 
-//                .formLogin(Customizer.withDefaults())
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll())
 
                 .logout(logout-> logout
                         .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/login?logout")
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
@@ -54,9 +50,7 @@ public class SecurityConfig {
 
                 .userDetailsService(jpaUserDetailsService)
                 .headers(headers -> headers.frameOptions(customizer -> customizer.sameOrigin()))
-//                .httpBasic(Customizer.withDefaults())
                 .build();
-
     }
 
     @Bean

@@ -14,12 +14,9 @@
         <h2 th:text="'SCRUM Room Code: ' + ${room.getCode()}"></h2>
 
         <form action="#" th:action="@{/saveVoteWs/{code}(code=${room.getCode()})}" th:object="${room}" method="post">
-            <div th:id=${card.getFigure()} th:each="card, stat : ${room.getCards()}">
+            <div th:id="${card.getFigure()}" th:each="card, stat : ${room.getCards()}">
             <input type="radio" th:value="${card.getId()}" th:text="${card.getFigure()}" name="card" th:required="${stat.first}" th:checked="${card != null && selectedCard != null && card.getId() == selectedCard.getId()}"/>
             </div>
-
-<!--            <button type="submit">Głosuj a</button>-->
-<!--            <button id="send-btn" type="submit">Głosuj WS</button>-->
 
             <table>
                 <tbody id="voting">
@@ -39,23 +36,7 @@
 
         </form>
 
-<!--        <tr th:each="vote : ${votes}">-->
-<!--            <td th:text="${vote.getVoter().getName()}"></td>-->
-<!--            <td>-->
-<!--                <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'Oczekiwanie na głos'}"></div>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <form action="#" th:action="@{/saveVoteWs/{code}(code=${room.getCode()})}" th:object="${room}" method="post">-->
-<!--                    <a th:href="@{/deleteVoter/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>-->
-<!--                    <button type="submit">Usuń</button>-->
-<!--                </form>-->
-<!--            </td>-->
-<!--        </tr>-->
-
-
         <button id="connect" class="btn btn-default" type="submit">Connect</button>
-
-<!--        <button id="send-btn" type="submit">Głosuj WS</button>-->
 
                 <table id="conversation">
                     <thead>
@@ -78,11 +59,9 @@
 
 
         <script th:inline="javascript">
-            /*<![CDATA[*/
             window.voter = [[${voter}]];
             window.room = [[${room.getName()}]];
             window.roomCode = [[${room.getCode}]];
-            /*]]>*/
         </script>
 
         <script src="/app.js"></script>

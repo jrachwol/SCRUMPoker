@@ -61,7 +61,6 @@ public class RoomController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
         Room room = new Room();
-//        room.setName("room");
         model.addAttribute("room", room);
         ArrayList<Card> allCards = new ArrayList<>((Collection) cardService.getAllCards());
         model.addAttribute("allCards", allCards);

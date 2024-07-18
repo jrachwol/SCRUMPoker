@@ -31,7 +31,6 @@ public class ScrumPokerApplication {
                                         CardRepository cards,
                                         VotingRepository votings,
                                         RandomTextService randomTextService) {
-//        RandomTextService randomTextService = new RandomTextService();
         return args -> {
             members.save(new Member("m1", encoder.encode("q"), "ROLE_MEMBER"));
             members.save(new Member("m2", encoder.encode("q"), "ROLE_MEMBER,ROLE_ADMIN"));
@@ -43,7 +42,7 @@ public class ScrumPokerApplication {
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(),  "room02", members.findByName("member02").get().getId()));
 //            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(),  "room03", members.findByName("member02").get().getId()));
 
-            // Utwórz karty
+            // Zestaw kart do głosowania
             List<String> figures = Arrays.asList("1", "2", "3", "Sth01", "Sth02");
             for (String figure : figures) {
                 Card card = new Card();
@@ -51,7 +50,7 @@ public class ScrumPokerApplication {
                 cards.save(card);
             }
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
+            // Pierwszy pokój głosowania z zestawem wszystkich kart do głosowania
             Room room01 = new Room();
             room01.setName("room01");
             room01.setOwner(members.findByName("m1").get());
@@ -60,7 +59,7 @@ public class ScrumPokerApplication {
             rooms.save(room01);
 
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
+            // Drugi pokój głosowania z zestawem wszystkich kart do głosowania
             Room room02 = new Room();
             room02.setName("room02");
             room02.setOwner(members.findByName("m1").get());
@@ -69,7 +68,7 @@ public class ScrumPokerApplication {
             rooms.save(room02);
 
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
+            // Trzeci pokój głosowania z zestawem wszystkich kart do głosowania
             Room room03 = new Room();
             room03.setName("room03");
             room03.setOwner(members.findByName("m2").get());
@@ -78,7 +77,7 @@ public class ScrumPokerApplication {
             rooms.save(room03);
 
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
+            // Czwarty pokój głosowania z zestawem wszystkich kart do głosowania
             Room room04 = new Room();
             room04.setName("room04");
             room04.setOwner(members.findByName("m2").get());
@@ -87,8 +86,7 @@ public class ScrumPokerApplication {
             rooms.save(room04);
 
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
-
+            // Piąty pokój głosowania z zestawem wszystkich kart do głosowania
             Room room05 = new Room();
             room05.setName("room05");
             room05.setOwner(members.findByName("m2").get());
@@ -96,6 +94,7 @@ public class ScrumPokerApplication {
             room05.setCards(new ArrayList<>((Collection) cards.findAll()));
             rooms.save(room05);
 
+            // Szósty pokój głosowania z zestawem kart do głosowania bez ostatniej karty
             Room room06 = new Room();
             room06.setName("room06");
             room06.setOwner(members.findByName("m2").get());
@@ -105,7 +104,7 @@ public class ScrumPokerApplication {
             room06.setCards(cardsList);
             rooms.save(room06);
 
-//            dodaj nowy pokój bez drugiej karty
+            // Siódmy pokój głosowania z zestawem wszystkich kart do głosowania bez drugiej karty
             Room room07 = new Room();
             room07.setName("room07");
             room07.setOwner(members.findByName("m2").get());

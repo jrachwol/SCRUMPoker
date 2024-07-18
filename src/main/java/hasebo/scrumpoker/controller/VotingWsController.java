@@ -49,9 +49,9 @@ public class VotingWsController {
                          Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
-        Room room = roomService.getRoomInfoByCode(code);
-        ArrayList<Card> roomCards = new ArrayList<>((Collection) room.getCards());
-        model.addAttribute("room", room);
+        Room votingRoom = roomService.getRoomInfoByCode(code);
+        ArrayList<Card> roomCards = new ArrayList<>((Collection) votingRoom.getCards());
+        model.addAttribute("room", votingRoom);
         model.addAttribute("roomCards", roomCards);
         Card card = (Card) httpSession.getAttribute("selectedCard");
         model.addAttribute("selectedCard", card);
@@ -62,11 +62,10 @@ public class VotingWsController {
 //        if (!room.getVoters().contains(currentMember)) {
 //            room.getVoters().add(currentMember);
 //        }
-        roomRepository.save(room);
+//        roomRepository.save(room);
 //        List<Member> voters = room.getVoters();
 //        model.addAttribute("voters", voters);
 
-        Room votingRoom = roomService.getRoomInfoByCode(code);
         Optional<Voting> optionalVoting = votingRepository.findById(1L);
         Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(currentMember, optionalVoting.get(), votingRoom);
         if(!existingVoteOptional.isPresent()){
@@ -103,18 +102,6 @@ public class VotingWsController {
                 jsonVotes.add(gson.toJson(map));
             }
             simpMessagingTemplate.convertAndSend("/topic/votings", jsonVotes);
-
-//                String json = gson.toJson(vote.getVoter().getName());
-//                vote.getVote().getFigure();
-//                jsonList.add(json);
-//            }
-//            model.addAttribute("votes", votesList);
-//            Gson gson = new Gson();
-//            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-//            String jsonVotes = gson.toJson(votesList);
-//            System.out.println(jsonVotes);
-//            simpMessagingTemplate.convertAndSend("/topic/votes", jsonVotes);
-
         }
 
         return "votingws";
@@ -149,8 +136,6 @@ public class VotingWsController {
                               Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Room room = roomService.getRoomInfoByCode(code);
-//        room.getVoters().removeIf(voter -> voter.getId().equals(id));
-//        roomRepository.save(room);
 
         Optional<Voting> optionalVoting = votingRepository.findById(1L);
         Optional<Vote> existingVoteOptional = voteRepository.findByVoterAndVotingAndRoom(memberService.getMemberById(id), optionalVoting.get(), room);

@@ -20,7 +20,7 @@
 
     <h2 th:text="'Zalogowany użytkownik: ' + ${member}"></h2>
 
-    <form action="#" th:action="@{/saveNewRoom}" th:object="${room}" method="post">
+    <form action="#" th:action="@{/newroom}" th:object="${room}" method="post">
         <label for="name">Nazwa:</label>
         <input type="text" id="name" th:field="*{name}" placeholder="nazwa pokoju" required/>
         <br>

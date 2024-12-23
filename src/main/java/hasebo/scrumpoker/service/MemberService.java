@@ -11,7 +11,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-
     public Member getMemberById (Long memberId) {
         return memberRepository.findById(memberId).get();
     }

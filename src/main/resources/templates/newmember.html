@@ -7,8 +7,9 @@
 <body>
 
 <div th:if="${error}" th:text="${error}" class="error-message"></div>
+<div th:if="${success}" th:text="${success}" class="success-message"></div>
 
-<form action="#" th:action="@{/savenewmember}" th:object="${member}" method="post">
+<form action="#" th:action="@{/newmember}" th:object="${member}" method="post">
     <label for="name">Nazwa:</label>
     <input type="text" id="name" th:field="*{name}" placeholder="nazwa użytkownika" required/>
 

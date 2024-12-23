@@ -40,7 +40,7 @@ public class RoomController {
     @GetMapping("/room/{code}")
     public String roomInfo(@PathVariable("code") String code, Model model) {
         Room room = roomService.getRoomInfoByCode(code);
-        List<Card> allCards = new ArrayList<>(cardService.getAllCards());
+        List<Card> allCards = cardService.getAllCards();
         model.addAttribute("room", room);
         model.addAttribute("allCards", allCards);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -48,7 +48,7 @@ public class RoomController {
         return "room";
     }
 
-    @PostMapping("/saveRoom/{code}")
+    @PostMapping("/room/{code}")
     public String saveRoom(@PathVariable("code") String code, @ModelAttribute Room room) {
         Room existingRoom = roomService.getRoomInfoByCode(code);
         existingRoom.setCards(room.getCards());
@@ -62,12 +62,12 @@ public class RoomController {
         model.addAttribute("member", auth.getName());
         Room room = new Room();
         model.addAttribute("room", room);
-        ArrayList<Card> allCards = new ArrayList<>((Collection) cardService.getAllCards());
+        List<Card> allCards = cardService.getAllCards();
         model.addAttribute("allCards", allCards);
         return "newroom";
     }
 
-    @PostMapping("/saveNewRoom")
+    @PostMapping("/newroom")
     public String saveNewRoom(@ModelAttribute Room room) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         room.setOwner(memberService.getMemberByName(auth.getName()));
@@ -77,7 +77,7 @@ public class RoomController {
     }
 
 //    usuwanie pokoju /deleteRoom/{code}
-    @GetMapping("/deleteRoom/{code}")
+    @GetMapping("/deleteroom/{code}")
     public String deleteRoom(@PathVariable("code") String code) {
         Room room = roomService.getRoomInfoByCode(code);
         roomService.deleteRoom(room);

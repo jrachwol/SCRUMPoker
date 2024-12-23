@@ -26,7 +26,7 @@
             <!-- Dodaj więcej kolumn zgodnie z atrybutami klasy Room -->
             <td><a th:href="@{/room/{code}(code=${room.getCode()})}">Edytuj</a></td>
             <td><a th:href="@{/votingws/{code}(code=${room.getCode()})}">Głosuj WS</a></td>
-            <td><a class="delete-link" th:href="@{/deleteRoom/{code}(code=${room.getCode()})}" th:data-code="${room.getCode()}">Usuń</a></td>
+            <td><a class="delete-link" th:href="@{/deleteroom/{code}(code=${room.getCode()})}" th:data-code="${room.getCode()}">Usuń</a></td>
         </tr>
 
         </tbody>

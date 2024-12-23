@@ -40,19 +40,21 @@ public class MemberController {
         return "newmember";
     }
 
-    @PostMapping("/savenewmember")
+    @PostMapping("/newmember")
     public String saveNewMember(@ModelAttribute Member member,
+                                Model model,
                                 RedirectAttributes redirectAttributes) {
         if(memberRepository.existsByName(member.getName())) {
-            redirectAttributes.addFlashAttribute("error",
-                    "Użytkownik o podanej nazwie istnieje.");
-            return "redirect:/newmember";
+            model.addAttribute("error",
+                    "User with the given name already exists.");
+            return "newmember";
         }
 
         String password = encoder.encode(member.getPassword());
         member.setPassword(password);
         member.setRoles("ROLE_MEMBER");
         memberRepository.save(member);
+        redirectAttributes.addFlashAttribute("success", "User registered successfully");
         return "redirect:/login";
 
     }

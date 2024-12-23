@@ -27,7 +27,6 @@ public class Vote {
 
     @ManyToOne
     @JoinColumn(name = "voting_id", nullable = false)
-//    @Expose(serialize = false, deserialize = false)
     private Voting voting;
 
     public Vote(Member voter, Room room, Card vote) {

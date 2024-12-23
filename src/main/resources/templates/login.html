@@ -4,6 +4,9 @@
     <title>Please Log In</title>
 </head>
 <body>
+
+<div th:if="${success}" th:text="${success}" class="success-message"></div>
+
 <h1>Please Log In</h1>
 <div th:if="${param.error}">
     Invalid username and password.</div>

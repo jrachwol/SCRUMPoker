@@ -5,11 +5,9 @@ const stompClient = new StompJs.Client({
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/votes', (vote) => {
-        console.log("Received payload:", vote);
-        showVote(vote.body);
-    });
-    stompClient.subscribe('/topic/votings', (voting) => {
+    const pathParts = window.location.pathname.split('/');
+    const roomCode = pathParts.pop();
+    stompClient.subscribe(`/topic/votings/${roomCode}`, (voting) => {
         console.log("Received payload:", voting);
         showVotes(voting.body);
     });
@@ -44,19 +42,6 @@ function disconnect() {
     stompClient.deactivate();
     setConnected(false);
     console.log("Disconnected");
-}
-
-// function sendVote() {
-//     stompClient.publish({
-//         destination: "/app/hello",
-//         body: JSON.stringify({'name': $("#name").val()})
-//     });
-// }
-
-function showVote(message) {
-    // $("#vote_" + voter).html("<tr><td>" + message + "</td></tr>");
-    if (window.room == JSON.parse(message).room)
-        $("#vote_" + JSON.parse(message).voter).html("<tr><td>" + JSON.parse(message).content + "</td></tr>");
 }
 
 function showVotes(message) {

@@ -4,6 +4,7 @@ import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.repository.MemberRepository;
 import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,23 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
 
     public final MemberService memberService;
     public final RandomTextService randomTextService;
     public final MemberRepository memberRepository;
-    public final PasswordEncoder encoder;
-
-    @Autowired
-    public MemberController(MemberService memberService,
-                            RandomTextService randomTextService,
-                            MemberRepository memberRepository,
-                            PasswordEncoder encoder) {
-        this.memberService = memberService;
-        this.randomTextService = randomTextService;
-        this.memberRepository = memberRepository;
-        this.encoder = encoder;
-    }
+//    public final PasswordEncoder encoder;
 
     @GetMapping("/newmember")
     public String newMember (Model model) {
@@ -44,18 +35,10 @@ public class MemberController {
     public String saveNewMember(@ModelAttribute Member member,
                                 Model model,
                                 RedirectAttributes redirectAttributes) {
-        if(memberRepository.existsByName(member.getName())) {
-            model.addAttribute("error",
-                    "User with the given name already exists.");
+        if (memberService.registerNewMember(member, model, redirectAttributes)) {
+            return "redirect:/login";
+        } else {
             return "newmember";
         }
-
-        String password = encoder.encode(member.getPassword());
-        member.setPassword(password);
-        member.setRoles("ROLE_MEMBER");
-        memberRepository.save(member);
-        redirectAttributes.addFlashAttribute("success", "User registered successfully");
-        return "redirect:/login";
-
     }
 }

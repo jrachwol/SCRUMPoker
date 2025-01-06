@@ -52,9 +52,9 @@ public class ScrumPokerApplication {
             roomsList.add(createRoom("room02", members.findByName("m1").get(), randomTextService, cards));
             roomsList.add(createRoom("room03", members.findByName("m2").get(), randomTextService, cards));
             roomsList.add(createRoom("room04", members.findByName("m2").get(), randomTextService, cards));
-            roomsList.add(createRoom("room05", members.findByName("m2").get(), randomTextService, cards));
-            roomsList.add(createRoom("room06", members.findByName("m2").get(), randomTextService, cards, -1));
-            roomsList.add(createRoom("room07", members.findByName("m2").get(), randomTextService, cards, -2));
+            roomsList.add(createRoom("room05", members.findByName("m2").get(), randomTextService, cards, 0));
+            roomsList.add(createRoom("room06", members.findByName("m2").get(), randomTextService, cards, 1));
+            roomsList.add(createRoom("room07", members.findByName("m2").get(), randomTextService, cards, 2));
 
             rooms.saveAll(roomsList);
 

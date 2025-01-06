@@ -17,17 +17,9 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
 
-    public Room getRoomInfoById(Long roomId) {
-        return roomRepository.findById(roomId).get();
-    }
-
-    public Room getRoomInfoByCode(String code) {
-        return roomRepository.findByCode(code).get();
-    }
-
-    public List<Room> getRoomsByOwnerId(Long ownerId) {
-        return roomRepository.findByOwnerId(ownerId).get();
-    }
+//    public Room getRoomInfoByCode(String code) {
+//        return roomRepository.findByCode(code).get();
+//    }
 
     public List<Room> getRoomsByOwnerName(String ownerName) {
         Optional<Member> member = memberRepository.findByName(ownerName);
@@ -44,7 +36,8 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    public void deleteRoom(Room room) {
+    public void deleteRoom(String roomCode) {
+        Room room = roomRepository.findByCode(roomCode).get();
         roomRepository.delete(room);
     }
 

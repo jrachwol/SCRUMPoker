@@ -27,9 +27,8 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf ->     csrf.ignoringRequestMatchers(
-                                new AntPathRequestMatcher("/h2-console/**"),
-                                new AntPathRequestMatcher("/newmember/**"),
-                                new AntPathRequestMatcher("/savenewmember/**")))
+                                new AntPathRequestMatcher("/h2-console/**")
+                                ))
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()

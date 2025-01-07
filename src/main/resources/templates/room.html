@@ -11,9 +11,7 @@
         <h2 th:text="'SCRUM Room Name: ' + ${room.getName()}"></h2>
         <h2 th:text="'SCRUM Room Code: ' + ${room.getCode()}"></h2>
 
-<!--        <h2 <span th:each=" card : ${room.getCards()} " th:text="${card.figure + ' '}"></span>></h2> -->
-
-        <form action="#" th:action="@{/saveRoom/{code}(code=${room.getCode()})}" th:object="${room}" method="post"> <!-- th:object="${room}" -->
+        <form action="#" th:action="@{/room/{code}(code=${room.getCode()})}" th:object="${room}" method="post">
             <div th:each="card : ${allCards}" style="display: inline-block; margin-right: 10px;">
                 <input type="checkbox" th:id="${card.id}" th:value="${card.id}" th:field="*{cards}" />
                 <label th:for="${card.id}" th:text="${card.figure}"></label>
@@ -21,7 +19,6 @@
             <button type="submit">Zapisz</button>
 
             <h2><a  th:href="@{/rooms}">Lista pokoi</a></h2>
-
 
         </form>
 

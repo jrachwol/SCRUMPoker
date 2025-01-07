@@ -1,15 +1,18 @@
 package hasebo.scrumpoker;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import hasebo.scrumpoker.model.Card;
 import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
+import hasebo.scrumpoker.model.Voting;
 import hasebo.scrumpoker.repository.CardRepository;
 import hasebo.scrumpoker.repository.MemberRepository;
 import hasebo.scrumpoker.repository.RoomRepository;
+import hasebo.scrumpoker.repository.VotingRepository;
 import hasebo.scrumpoker.service.RandomTextService;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -23,20 +26,20 @@ public class ScrumPokerApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(MemberRepository members, PasswordEncoder encoder, RoomRepository rooms, CardRepository cards) {
-        RandomTextService randomTextService = new RandomTextService();
+    @Transactional
+    CommandLineRunner commandLineRunner(MemberRepository members,
+                                        PasswordEncoder encoder,
+                                        RoomRepository rooms,
+                                        CardRepository cards,
+                                        VotingRepository votings,
+                                        RandomTextService randomTextService) {
         return args -> {
-            members.save(new Member("member01", encoder.encode("pswd"), "ROLE_MEMBER"));
-            members.save(new Member("member02", encoder.encode("pswd"), "ROLE_MEMBER,ROLE_ADMIN"));
-            members.save(new Member("member03", encoder.encode("pswd"), "ROLE_MEMBER"));
+            members.save(new Member("m1", encoder.encode("q"), "ROLE_MEMBER"));
+            members.save(new Member("m2", encoder.encode("q"), "ROLE_MEMBER,ROLE_ADMIN"));
+            members.save(new Member("m3", encoder.encode("q"), "ROLE_MEMBER"));
+            members.save(new Member("q", encoder.encode("q"), "ROLE_MEMBER"));
 
-
-//            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(), "room01", members.findByName("member01").get().getId()));
-//            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(), "room04", members.findByName("member01").get().getId()));
-//            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(),  "room02", members.findByName("member02").get().getId()));
-//            rooms.save(new Room(randomTextService.generateRandomText().getGeneratedText(),  "room03", members.findByName("member02").get().getId()));
-
-            // Utwórz karty
+            // Tworzy domyślny zestaw kart do głosowania
             List<String> figures = Arrays.asList("1", "2", "3", "Sth01", "Sth02");
             for (String figure : figures) {
                 Card card = new Card();
@@ -44,61 +47,41 @@ public class ScrumPokerApplication {
                 cards.save(card);
             }
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
-            Room room01 = new Room();
-            room01.setName("room01");
-            room01.setOwner(members.findByName("member01").get());
-            room01.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room01.setCards(new ArrayList<>((Collection) cards.findAll()));
-            rooms.save(room01);
+            List<Room> roomsList = new ArrayList<>();
+            roomsList.add(createRoom("room01", members.findByName("m1").get(), randomTextService, cards));
+            roomsList.add(createRoom("room02", members.findByName("m1").get(), randomTextService, cards));
+            roomsList.add(createRoom("room03", members.findByName("m2").get(), randomTextService, cards));
+            roomsList.add(createRoom("room04", members.findByName("m2").get(), randomTextService, cards));
+            roomsList.add(createRoom("room05", members.findByName("m2").get(), randomTextService, cards, 0));
+            roomsList.add(createRoom("room06", members.findByName("m2").get(), randomTextService, cards, 1));
+            roomsList.add(createRoom("room07", members.findByName("m2").get(), randomTextService, cards, 2));
 
+            rooms.saveAll(roomsList);
 
-            // Utwórz pokój i przypisz do niego wszystkie karty
-            Room room02 = new Room();
-            room02.setName("room02");
-            room02.setOwner(members.findByName("member01").get());
-            room02.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room02.setCards(new ArrayList<>((Collection) cards.findAll()));
-            rooms.save(room02);
-
-
-            // Utwórz pokój i przypisz do niego wszystkie karty
-            Room room03 = new Room();
-            room03.setName("room03");
-            room03.setOwner(members.findByName("member02").get());
-            room03.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room03.setCards(new ArrayList<>((Collection) cards.findAll()));
-            rooms.save(room03);
-
-
-            // Utwórz pokój i przypisz do niego wszystkie karty
-            Room room04 = new Room();
-            room04.setName("room04");
-            room04.setOwner(members.findByName("member02").get());
-            room04.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room04.setCards(new ArrayList<>((Collection) cards.findAll()));
-            rooms.save(room04);
-
-
-            // Utwórz pokój i przypisz do niego wszystkie karty
-
-            Room room05 = new Room();
-            room05.setName("room05");
-            room05.setOwner(members.findByName("member02").get());
-            room05.setCode(randomTextService.generateRandomText().getGeneratedText());
-            room05.setCards(new ArrayList<>((Collection) cards.findAll()));
-            rooms.save(room05);
-
-            Room room06 = new Room();
-            room06.setName("room06");
-            room06.setOwner(members.findByName("member02").get());
-            room06.setCode(randomTextService.generateRandomText().getGeneratedText());
-            List<Card> cardsList = new ArrayList<>((Collection) cards.findAll());
-            cardsList.remove(cardsList.size() - 1);
-            room06.setCards(cardsList);
-            rooms.save(room06);
+            Voting voting = new Voting("Nazwa", "Opis", true);
+            votings.save(voting);
 
         };
+
     }
+
+    private Room createRoom(String name, Member owner, RandomTextService randomTextService, CardRepository cards, Integer... exclusions) {
+        Room room = new Room();
+        room.setName(name);
+        room.setOwner(owner);
+        room.setCode(randomTextService.generateRandomText().getGeneratedText());
+
+        List<Card> availableCards = new ArrayList<>((Collection<Card>) cards.findAll());
+        if (exclusions.length > 0) {
+            for (int exclusion : exclusions) {
+                if (exclusion >= 0 && exclusion < availableCards.size()) {
+                    availableCards.remove((int) exclusion);
+                }
+            }
+        }
+        room.setCards(availableCards);
+        return room;
+    }
+
 
 }

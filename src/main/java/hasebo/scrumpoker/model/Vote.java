@@ -14,7 +14,7 @@ public class Vote {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "voter_id", nullable = false)
     private Member voter;
 
     @ManyToOne

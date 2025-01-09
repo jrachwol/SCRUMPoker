@@ -23,10 +23,10 @@
                     <tr th:each="vote : ${votes}">
                         <td th:text="${vote.getVoter().getName()}"></td>
                         <td>
-                            <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'OOczekiwanie na głos'}"></div>
+                            <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? #strings.replace(vote.getVote().getFigure(), ' ', '&nbsp;') : 'Oczekiwanie na głos'}"></div>
                         <td>
                         <td>
-                            <a th:href="@{/deletevoterws/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
+                            <a th:href="@{/deletevoterws/{id}/{code} (id=${vote.getVoter().getId()}, code=${#strings.replace(room.getCode(), '&quot;', '')})}" th:text="${'Usuń z pokoju'}"></a>
                         </td>
                     </tr>
                 </tbody>
@@ -50,13 +50,9 @@
 
         <script th:inline="javascript">
             $('input[type=radio][name=card]').change(function() {
-                // Wykonaj kod tutaj
                sendVote();
-                // "Kliknij" przycisk submit - symuluje kliknięcie przycisku submit w formularzu
-                $('form').submit();
             });
         </script>
-
 
         <script th:inline="javascript">
             window.voter = `[[${voter}]]`;

@@ -1,20 +1,27 @@
 package hasebo.scrumpoker.controller;
 
 import hasebo.scrumpoker.model.*;
+import hasebo.scrumpoker.repository.CardRepository;
 import hasebo.scrumpoker.service.VotingService;
+import java.util.Map;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @AllArgsConstructor
 public class VotingWsController {
 
     private final VotingService votingService;
+    private final CardRepository cardRepository;
 
     @GetMapping("/votingws/{roomcode}")
     public String voting(@PathVariable("roomcode") String roomCode,
@@ -24,11 +31,19 @@ public class VotingWsController {
     }
 
     @PostMapping("/savevotews/{roomcode}")
-    public String saveVoteWs(@PathVariable("roomcode") String roomCode,
-                             @ModelAttribute Card card,
+    @ResponseBody
+    public ResponseEntity<?> saveVoteWs(@PathVariable("roomcode") String roomCode,
+                             @RequestBody Map<String, Object> requestBody,
                              Model model) {
-        votingService.saveVote(roomCode, card, model);
-        return "redirect:/votingws/" + roomCode;
+        Long cardId = Long.parseLong((String)requestBody.get("content"));
+        Optional<Card> cardOptional = cardRepository.findById(cardId);
+        if (cardOptional.isPresent()) {
+            Card card = cardOptional.get();
+            votingService.saveVote(roomCode, card, model);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @GetMapping("/deletevoterws/{voterid}/{roomcode}")

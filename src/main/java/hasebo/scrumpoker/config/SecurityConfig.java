@@ -27,13 +27,15 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf ->     csrf.ignoringRequestMatchers(
-                                new AntPathRequestMatcher("/h2-console/**")
+                                new AntPathRequestMatcher("/h2-console/**"),
+                                new AntPathRequestMatcher("/savevotews/**")
                                 ))
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/newmember/**").permitAll()
                         .requestMatchers("/savenewmember/**").permitAll()
+                        .requestMatchers("/savevotews/**").permitAll()
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form

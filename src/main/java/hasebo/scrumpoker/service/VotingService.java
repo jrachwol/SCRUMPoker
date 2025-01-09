@@ -54,14 +54,12 @@ public class VotingService {
             model.addAttribute("votes", votes);
             sendVotesToClients(votes, roomCode);
         }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! saveVote");
     }
 
     public void handleVoting(String roomCode, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
 
-//        Room votingRoom = roomService.getRoomInfoByCode(roomCode);
         Room votingRoom = roomRepository.findByCode(roomCode).get();
 
         List<Card> roomCards = votingRoom.getCards();
@@ -100,9 +98,9 @@ public class VotingService {
             map.put("voter", vote.getVoter().getName());
             map.put("voterId", vote.getVoter().getId());
             if (vote.getVote() == null) {
-                map.put("vote", "Oczekiwanie na głos");
+                map.put("vote", String.format("%-25s", "Oczekiwanie na głos"));
             } else {
-                map.put("vote", vote.getVote().getFigure());
+                map.put("vote", String.format("%-25s", vote.getVote().getFigure()));
             }
             jsonVotes.add(gson.toJson(map));
         }

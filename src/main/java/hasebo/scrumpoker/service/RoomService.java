@@ -17,10 +17,6 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
 
-//    public Room getRoomInfoByCode(String code) {
-//        return roomRepository.findByCode(code).get();
-//    }
-
     public List<Room> getRoomsByOwnerName(String ownerName) {
         Optional<Member> member = memberRepository.findByName(ownerName);
         if (member.isPresent()) {

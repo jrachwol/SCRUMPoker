@@ -26,10 +26,8 @@ public class Room {
             name = "card_room",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id"))
-    @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> votes = new ArrayList<>();
 

@@ -25,8 +25,9 @@ public class VotingWsController {
 
     @PostMapping("/savevotews/{roomcode}")
     public String saveVoteWs(@PathVariable("roomcode") String roomCode,
-                             @ModelAttribute Card card) {
-        votingService.saveVote(roomCode, card);
+                             @ModelAttribute Card card,
+                             Model model) {
+        votingService.saveVote(roomCode, card, model);
         return "redirect:/votingws/" + roomCode;
     }
 

@@ -32,7 +32,7 @@ public class VotingService {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final RoomRepository roomRepository;
 
-    public void saveVote(String roomCode, Card card) {
+    public void saveVote(String roomCode, Card card, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Member voter = memberService.getMemberByName(auth.getName());
@@ -49,6 +49,12 @@ public class VotingService {
             optionalVoting.ifPresent(vote::setVoting);
             voteRepository.save(vote);
         }
+        List<Vote> votes = voteRepository.findByVotingAndRoom(optionalVoting, votingRoom);
+        if (!votes.isEmpty()) {
+            model.addAttribute("votes", votes);
+            sendVotesToClients(votes, roomCode);
+        }
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! saveVote");
     }
 
     public void handleVoting(String roomCode, Model model) {

@@ -95,7 +95,7 @@ function sendVote() {
             console.log('voter: ', window.voter);
             console.log('[i]', i);
             stompClient.publish({
-                destination: "/app/hello",
+                destination: "/savevotews/" + window.roomCode,
                 body: JSON.stringify({
                     content: radios[i].nextSibling.textContent,
                     voter: window.voter,

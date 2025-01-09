@@ -23,7 +23,7 @@
                     <tr th:each="vote : ${votes}">
                         <td th:text="${vote.getVoter().getName()}"></td>
                         <td>
-                            <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'Oczekiwanie na głos'}"></div>
+                            <div th:id="'vote_' + ${vote.getVoter().getName()}" th:text="${vote.getVote() != null ? vote.getVote().getFigure() : 'OOczekiwanie na głos'}"></div>
                         <td>
                         <td>
                             <a th:href="@{/deletevoterws/{id}/{code} (id=${vote.getVoter().getId()}, code=${room.getCode()})}" th:text="${'Usuń'}"></a>
@@ -59,9 +59,9 @@
 
 
         <script th:inline="javascript">
-            window.voter = [[${voter}]];
-            window.room = [[${room.getName()}]];
-            window.roomCode = [[${room.getCode}]];
+            window.voter = `[[${voter}]]`;
+            window.room = `[[${room.getName()}]]`;
+            window.roomCode = `[[${room.getCode}]]`;
         </script>
 
         <script src="/app.js"></script>

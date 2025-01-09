@@ -17,9 +17,6 @@ public class Voting {
     private String description;
     private boolean active;
 
-//    @OneToMany(mappedBy = "voting")
-//    private List<Vote> votes;
-
     public Voting(String title, String description, boolean active) {
         this.title = title;
         this.description = description;

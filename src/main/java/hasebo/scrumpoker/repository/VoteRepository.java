@@ -4,13 +4,13 @@ import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
 import hasebo.scrumpoker.model.Vote;
 import hasebo.scrumpoker.model.Voting;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VoteRepository extends CrudRepository<Vote, Long> {
+public interface VoteRepository extends JpaRepository<Vote, Long> {
 
 
     Optional<Vote> findByVoterAndVotingAndRoom(Member voter, Voting voting, Room room);

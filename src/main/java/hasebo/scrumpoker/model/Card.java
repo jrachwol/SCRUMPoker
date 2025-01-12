@@ -17,8 +17,6 @@ public class Card {
     private String figure;
 
     @ManyToMany(mappedBy = "cards")
-    @JsonIgnore
-//    private Set<Room> rooms = new HashSet<>();
     private List<Room> rooms = new ArrayList<>();
 
     public Card(Long id, String figure) {

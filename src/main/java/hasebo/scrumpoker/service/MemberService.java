@@ -1,5 +1,6 @@
 package hasebo.scrumpoker.service;
 
+import hasebo.scrumpoker.exception.UserAlreadyExistsException;
 import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.repository.MemberRepository;
 import lombok.AllArgsConstructor;
@@ -23,18 +24,14 @@ public class MemberService {
         return memberRepository.findByName(ownerName).get();
     }
 
-    public boolean registerNewMember(Member member, Model model, RedirectAttributes redirectAttributes) {
+    public void registerNewMember(Member member) {
         if(memberRepository.existsByName(member.getName())) {
-            model.addAttribute("error",
-                "User with the given name already exists.");
-            return false;
+            throw new UserAlreadyExistsException("User with the given name: " + member.getName() + " already exists.");
         }
 
         String password = encoder.encode(member.getPassword());
         member.setPassword(password);
         member.setRoles("ROLE_MEMBER");
         memberRepository.save(member);
-        redirectAttributes.addFlashAttribute("success", "User registered successfully");
-        return true;
     }
 }

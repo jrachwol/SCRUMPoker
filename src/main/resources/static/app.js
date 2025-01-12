@@ -77,9 +77,9 @@ function showVotes(message) {
 
         console.log('Current voteJSON:', voteJSON);
 
-        let deleteURL = '/deleteVoterws/' + voteJSON.voterId + '/'+ window.roomCode;
+        let deleteURL = '/deletevoterws/' + voteJSON.voterId + '/'+ window.roomCode.replaceAll('\"', '');
         // var voteHtml = "<tr><td id='vote_" + voteJSON.voter + "'>" + voteJSON.voter + "</td><td>" + voteJSON.vote + "</td></tr><a href='" + deleteURL + "'>Usuń</a></td></tr>";
-        var voteHtml = "<tr><td id='vote_" + voteJSON.voter + "'>" + voteJSON.voter + "</td><td>" + voteJSON.vote + "</td><td><a href='" + deleteURL + "'>Usuń</a></td></tr>";
+        var voteHtml = "<tr><td id='vote_" + voteJSON.voter + "'>" + voteJSON.voter + "</td><td>" + voteJSON.vote.replace(/ /g, '&nbsp;') + "</td><td><a href='" + deleteURL + "'>Usuń z pokoju</a></td></tr>";
         $('#voting').append(voteHtml);
     }
 }
@@ -94,14 +94,28 @@ function sendVote() {
             console.log('radios[i].title', radios[i].title);
             console.log('voter: ', window.voter);
             console.log('[i]', i);
-            stompClient.publish({
-                destination: "/app/hello",
+            // stompClient.publish({
+            //     destination: "/savevotews/" + window.roomCode,
+            //     body: JSON.stringify({
+            //         content: radios[i].value,
+            //         voter: window.voter,
+            //         room: window.room
+            //     })
+            // });
+            const pathParts = window.location.pathname.split('/');
+            const roomCode = pathParts.pop();
+            fetch(`/savevotews/${roomCode}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
-                    content: radios[i].nextSibling.textContent,
+                    content: radios[i].value,
                     voter: window.voter,
-                    room: window.room
-                })
+                    room: window.room,
+                }),
             });
+            console.log('Sent vote:', radios[i].value);
             break;
         }
     }

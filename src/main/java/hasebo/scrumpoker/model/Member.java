@@ -20,7 +20,6 @@ public class Member {
 //    private String lastView;
 
     @OneToMany(mappedBy = "owner")
-    @JsonIgnore
     private List<Room> rooms = new ArrayList<>();
 
     public Member(String name, String password, String roles) {

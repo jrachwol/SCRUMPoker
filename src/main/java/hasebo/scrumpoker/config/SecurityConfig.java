@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -19,11 +18,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final JpaUserDetailsService jpaUserDetailsService;
-    private final CsrfLoggingFilter csrfLoggingFilter;
 
-    public SecurityConfig(JpaUserDetailsService jpaUserDetailsService, CsrfLoggingFilter csrfLoggingFilter) {
+    public SecurityConfig(JpaUserDetailsService jpaUserDetailsService) {
         this.jpaUserDetailsService = jpaUserDetailsService;
-        this.csrfLoggingFilter = csrfLoggingFilter;
     }
 
 
@@ -36,7 +33,6 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/h2-console/**")
                         )
                 )
-            .addFilterAfter(csrfLoggingFilter, CsrfFilter.class)
             .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/newmember/**").permitAll()

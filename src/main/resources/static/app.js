@@ -94,27 +94,37 @@ function sendVote() {
             console.log('radios[i].title', radios[i].title);
             console.log('voter: ', window.voter);
             console.log('[i]', i);
-            // stompClient.publish({
-            //     destination: "/savevotews/" + window.roomCode,
-            //     body: JSON.stringify({
-            //         content: radios[i].value,
-            //         voter: window.voter,
-            //         room: window.room
-            //     })
-            // });
             const pathParts = window.location.pathname.split('/');
             const roomCode = pathParts.pop();
+
+            const csrfToken = document.querySelector('input[name="_csrf"]').value;
+            console.log('csrfToken', csrfToken);
+
             fetch(`/savevotews/${roomCode}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "X-XSRF-TOKEN": csrfToken
                 },
                 body: JSON.stringify({
                     content: radios[i].value,
                     voter: window.voter,
                     room: window.room,
                 }),
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                console.log('response status', response.status);
+                if (!response.ok) {
+                    consloe.error('Error sending vote:', response);
+                } else {
+                    console.log('Vote sent successfuly', response);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending vote:', error);
             });
+
             console.log('Sent vote:', radios[i].value);
             break;
         }

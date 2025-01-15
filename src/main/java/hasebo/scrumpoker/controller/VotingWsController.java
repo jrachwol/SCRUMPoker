@@ -7,6 +7,7 @@ import hasebo.scrumpoker.repository.VoteRepository;
 import hasebo.scrumpoker.repository.VotingRepository;
 import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.VotingService;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class VotingWsController {
 
     @GetMapping("/votingws/{roomcode}")
     public String voting(@PathVariable("roomcode") String roomCode,
+                         HttpServletRequest request,
                          Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());
@@ -83,6 +85,7 @@ public class VotingWsController {
             votingService.saveVote(roomCode, card);
             return ResponseEntity.ok().build();
         } else {
+            System.out.println("saveVoteWs wrong");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

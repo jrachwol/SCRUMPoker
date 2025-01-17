@@ -28,8 +28,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf ->
-                    csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers(
+                    csrf.ignoringRequestMatchers(
                                 new AntPathRequestMatcher("/h2-console/**")
                         )
                 )

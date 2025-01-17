@@ -37,7 +37,6 @@ public class VotingWsController {
 
     @GetMapping("/votingws/{roomcode}")
     public String voting(@PathVariable("roomcode") String roomCode,
-                         HttpServletRequest request,
                          Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("member", auth.getName());

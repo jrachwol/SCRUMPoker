@@ -1,6 +1,5 @@
 package hasebo.scrumpoker.model;
 
-import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 

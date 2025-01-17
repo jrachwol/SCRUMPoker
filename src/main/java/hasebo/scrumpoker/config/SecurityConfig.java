@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -26,16 +27,15 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf ->     csrf.ignoringRequestMatchers(
-                                new AntPathRequestMatcher("/h2-console/**"),
-                                new AntPathRequestMatcher("/savevotews/**")
-                                ))
-
-                .authorizeHttpRequests(authorize -> authorize
+                .csrf(csrf ->
+                    csrf.ignoringRequestMatchers(
+                                new AntPathRequestMatcher("/h2-console/**")
+                        )
+                )
+            .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/newmember/**").permitAll()
                         .requestMatchers("/savenewmember/**").permitAll()
-                        .requestMatchers("/savevotews/**").permitAll()
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form
@@ -47,11 +47,14 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID"))
+                        .deleteCookies("JSESSIONID")
+                )
 
                 .userDetailsService(jpaUserDetailsService)
-                .headers(headers -> headers.frameOptions(customizer -> customizer.sameOrigin()))
-                .build();
+                .headers(headers -> headers
+                    .frameOptions(customizer -> customizer.sameOrigin()))
+
+            .build();
     }
 
     @Bean

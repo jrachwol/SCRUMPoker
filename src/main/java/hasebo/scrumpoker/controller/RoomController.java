@@ -37,7 +37,7 @@ public class RoomController {
     }
 
     @PostMapping("/room/{roomcode}")
-    public String saveRoom(@PathVariable("roomCode") String roomCode, @ModelAttribute Room room) {
+    public String saveRoom(@PathVariable("roomcode") String roomCode, @ModelAttribute Room room) {
         Room existingRoom = roomRepository.findByCode(roomCode).get();
         existingRoom.setCards(room.getCards());
         roomService.saveRoom(existingRoom);

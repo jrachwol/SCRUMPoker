@@ -1,7 +1,7 @@
 package hasebo.scrumpoker.service;
 
-import hasebo.scrumpoker.model.SecurityUser;
 import hasebo.scrumpoker.repository.MemberRepository;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +17,14 @@ public class JpaUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String user) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository
-                .findByName(user)
-                .map(SecurityUser::new)
-                .orElseThrow(() -> new UsernameNotFoundException("Member not found: " + user));
+                .findByName(username)
+                .map(member -> new User(
+                    member.getName(),
+                    member.getPassword(),
+                    member.getAuthorities()))
+                .orElseThrow(() -> new UsernameNotFoundException("Member not found: " + username));
     }
 }
 

@@ -1,9 +1,13 @@
 package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name="vote")
 @NoArgsConstructor
 public class Vote {
@@ -34,35 +38,4 @@ public class Vote {
         this.vote = vote;
     }
 
-    public Member getVoter() {
-        return voter;
-    }
-
-    public void setVoter(Member voter) {
-        this.voter = voter;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public Card getVote() {
-        return vote;
-    }
-
-    public void setVote(Card vote) {
-        this.vote = vote;
-    }
-
-    public Voting getVoting() {
-        return voting;
-    }
-
-    public void setVoting(Voting voting) {
-        this.voting = voting;
-    }
 }

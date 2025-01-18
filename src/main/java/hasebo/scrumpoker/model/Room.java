@@ -1,11 +1,15 @@
 package hasebo.scrumpoker.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name="room")
 @NoArgsConstructor
 public class Room {
@@ -35,46 +39,6 @@ public class Room {
         this.name = name;
         this.owner = owner;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Member getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Member owner) {
-        this.owner = owner;
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
-//    public List<Member> getVoters() {
-//        return voters;
-//    }
 
     @Override
     public String toString() {

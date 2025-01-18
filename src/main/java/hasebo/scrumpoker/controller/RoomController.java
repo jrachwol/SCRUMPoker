@@ -8,6 +8,7 @@ import hasebo.scrumpoker.service.MemberService;
 import hasebo.scrumpoker.service.RandomTextService;
 import hasebo.scrumpoker.service.RoomService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ public class RoomController {
     private final RoomRepository roomRepository;
 
     @GetMapping("/room/{roomcode}")
+    @PreAuthorize("@roomAccessService.isOwner(#roomCode, authentication.name)")
     public String roomInfo(@PathVariable("roomcode") String roomCode, Model model) {
         Room room = roomRepository.findByCode(roomCode).get();
         List<Card> allCards = cardService.getAllCards();
@@ -37,6 +39,7 @@ public class RoomController {
     }
 
     @PostMapping("/room/{roomcode}")
+    @PreAuthorize("@roomAccessService.isOwner(#roomCode, authentication.name)")
     public String saveRoom(@PathVariable("roomcode") String roomCode, @ModelAttribute Room room) {
         Room existingRoom = roomRepository.findByCode(roomCode).get();
         existingRoom.setCards(room.getCards());
@@ -65,6 +68,7 @@ public class RoomController {
     }
 
     @GetMapping("/deleteroom/{roomcode}")
+    @PreAuthorize("@roomAccessService.isOwner(#roomCode, authentication.name)")
     public String deleteRoom(@PathVariable("roomcode") String roomCode) {
         Room room = roomRepository.findByCode(roomCode).get();
         roomService.deleteRoom(roomCode);

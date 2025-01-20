@@ -1,6 +1,6 @@
 package hasebo.scrumpoker.service;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hasebo.scrumpoker.model.Card;
 import hasebo.scrumpoker.model.Member;
 import hasebo.scrumpoker.model.Room;
@@ -19,7 +19,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +60,7 @@ public class VotingService {
     }
 
     public void sendVotesToClients(List<Vote> votes, String roomCode) {
-        Gson gson = new Gson();
+        ObjectMapper objectMapper = new ObjectMapper();
         List<String> jsonVotes = new ArrayList<>();
         for (Vote vote : votes) {
             Map<String, Object> map = new HashMap<>();
@@ -72,9 +71,14 @@ public class VotingService {
             } else {
                 map.put("vote", String.format("%-25s", vote.getVote().getFigure()));
             }
-            jsonVotes.add(gson.toJson(map));
+            try {
+                jsonVotes.add(objectMapper.writeValueAsString(map));
+            } catch (Exception e) {
+                throw new RuntimeException("Error serializing vote to JSON", e);
+            }
         }
         simpMessagingTemplate.convertAndSend("/topic/votings/" + roomCode, jsonVotes);
+
     }
 
     public void deleteVoter(String roomCode, Long voterId) {

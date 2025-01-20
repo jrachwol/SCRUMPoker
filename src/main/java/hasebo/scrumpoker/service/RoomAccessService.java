@@ -13,8 +13,7 @@ public class RoomAccessService {
 
     public boolean isOwner(String roomcode, String username) {
         Room room = roomRepository.findByCode(roomcode)
-            .orElseThrow(() -> new IllegalArgumentException("Room not found "
-                + "with code: " + roomcode));
+            .orElseThrow(() -> new IllegalArgumentException("Room not found"));
         return room.getOwner().getUsername().equals(username);
     }
 }

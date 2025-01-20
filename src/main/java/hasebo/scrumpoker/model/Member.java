@@ -92,7 +92,6 @@ public class Member implements ScrumPokerMember, SpringSecurityUserDetails {
         return "Member{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
                 ", roles='" + roles + '\'' +
                 '}';
     }

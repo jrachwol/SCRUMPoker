@@ -1,4 +1,4 @@
-package hasebo.scrumpoker.exception;
+package hasebo.scrumpoker.controller;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionController {
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDeniedException(Model model) {

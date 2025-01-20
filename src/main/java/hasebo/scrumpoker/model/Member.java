@@ -1,14 +1,24 @@
 package hasebo.scrumpoker.model;
 
+import hasebo.scrumpoker.interfaces.ScrumPokerMember;
+import hasebo.scrumpoker.interfaces.SpringSecurityUserDetails;
 import jakarta.persistence.*;
+import java.util.Arrays;
+import java.util.Collection;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
+@Getter
+@Setter
 @Table(name="member")
 @NoArgsConstructor
-public class Member {
+public class Member implements ScrumPokerMember, SpringSecurityUserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,32 +37,54 @@ public class Member {
         this.roles = roles;
     }
 
+    // Methods for Interface ScrumPokerMember
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    // Methods for Interface SpringSecurityUserDetails implements UserDetails (Spring Security)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.stream(roles
+            .split(","))
+            .map(SimpleGrantedAuthority::new)
+            .toList();
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return name;
     }
 
-    public String getRoles() {
-        return roles;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override
@@ -60,7 +92,6 @@ public class Member {
         return "Member{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
                 ", roles='" + roles + '\'' +
                 '}';
     }
